@@ -1,5 +1,4 @@
 <?php
-// Define some sample data to be displayed on the about page
 $aboutInfo = [
     'title' => 'About Our Company',
     'description' => 'We are a leading company in delivering top-notch services. Our team of professionals are dedicated to providing the best solutions for our clients.',
@@ -13,18 +12,10 @@ $aboutInfo = [
 ];
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css">
-    <title>About Us</title>
-</head>
-<body class="">
+<?php require "partials/head.php" ?>
 
-<?php include "./partials/nav.php"; ?>
+<?php require "partials/nav.php" ?>
+
 
 <!-- Main Content Section -->
 <main class="max-w-4xl mx-auto p-6 mt-8">
@@ -66,10 +57,6 @@ $aboutInfo = [
 </main>
 
 <!-- Footer Section -->
-<footer class="bg-blue-600 p-4 mt-auto text-center text-white">
-    <p>&copy; <?= date('Y') ?> Our Company. All rights reserved.</p>
-</footer>
-<script src="https://cdn.tailwindcss.com"></script>
+<?php include "./partials/footer.php"; ?>
 
-</body>
-</html>
+
