@@ -17,15 +17,6 @@ if (mysqli_query($conn, $sql)) {
     echo "Error creating table: " . mysqli_error($conn);
 }
 
-// 2) Insert sample data
-//$insert_sql = 'INSERT INTO dashboard_data (imageUrl, password, role)
-//               VALUES (\'https://example.com/image.jpg\', \'password123\', \'admin\')';
-//
-//if (mysqli_query($conn, $insert_sql)) {
-//    echo "Sample data inserted successfully.<br>";
-//} else {
-//    echo "Error inserting data: " . mysqli_error($conn);
-//}
 ?>
 
 <main class="">
@@ -61,13 +52,17 @@ if (mysqli_query($conn, $sql)) {
         <h2 class="text-center text-xl font-bold mb-3 underline">Hello. Welcome to the dashboard page!</h2>
 
         <div class="container mx-auto px-4">
-            <button class="bg-green-400 px-2 py-2 rounded text-slate-50 mb-2">Add new item</button>
+            <button id="openModal" class="bg-green-400 px-2 py-2 rounded text-slate-50 mb-2">Add new item</button>
+
+            <!-- modal component -->
+            <?php include './components/add-new-item-modal.php'; ?>
+
             <table class="min-w-full table-auto bg-gray-800 text-white">
                 <thead>
                 <tr>
                     <th class="px-4 py-2 text-left">Image URL</th>
-                    <th class="px-4 py-2 text-left">Password</th>
-                    <th class="px-4 py-2 text-left">Role</th>
+                    <th class="px-4 py-2 text-left">Title</th>
+                    <th class="px-4 py-2 text-left">Description</th>
                     <th class="px-4 py-2 text-left">Edit</th>
                     <th class="px-4 py-2 text-left">Delete</th>
                 </tr>
@@ -75,18 +70,17 @@ if (mysqli_query($conn, $sql)) {
                 <tbody class="divide-y divide-gray-700">
                 <?php
                 $fetch_sql = "SELECT * FROM dashboard_data";
-                $result = mysqli_query($conn, $fetch_sql);
                 if ($result = $conn->query($fetch_sql)) {
                     while ($row = $result->fetch_assoc()) {
                         $imageUrl = $row['imageUrl'];
-                        $password = $row['password'];
-                        $role = $row['role'];
+                        $title = $row['Title'];
+                        $desc = $row['Description'];
                         $id = $row['id'];
                         ?>
                         <tr class="bg-gray-900 hover:bg-gray-700">
                             <td class="px-4 py-2"><?php echo $imageUrl; ?></td>
-                            <td class="px-4 py-2"><?php echo $password; ?></td>
-                            <td class="px-4 py-2"><?php echo $role; ?></td>
+                            <td class="px-4 py-2"><?php echo $title; ?></td>
+                            <td class="px-4 py-2"><?php echo $desc; ?></td>
                             <td class="px-4 py-2">
                                 <a href="updatedata.php?id=<?php echo $id; ?>" class="text-blue-400 hover:underline">Edit</a>
                             </td>
