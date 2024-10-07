@@ -11,13 +11,13 @@ $sql = "CREATE TABLE IF NOT EXISTS dashboard_data (
     role VARCHAR(50) NOT NULL
 )";
 
-if (mysqli_query($conn, $sql)) {
-    echo "Table 'dashboard_data' created successfully.<br>";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
+    if (mysqli_query($conn, $sql)) {
+//        echo "Table 'dashboard_data' created successfully.<br>";
+    } else {
+//        echo "Error creating table: " . mysqli_error($conn);
+    }
 
-?>
+    ?>
 
 <main class="">
 
