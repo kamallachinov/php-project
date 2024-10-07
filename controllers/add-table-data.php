@@ -12,7 +12,7 @@
             $stmt->bind_param("sss", $imageUrl, $title, $desc);
 
             if ($stmt->execute()) {
-                header("Location: ../views/dashboard.view.php");  // Correct path to redirect
+                header("Location: ../views/dashboard.view.php");  
                 exit;
             } else {
                 echo "Something went wrong. Please try again later.";
