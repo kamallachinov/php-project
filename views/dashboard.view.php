@@ -2,22 +2,6 @@
 <?php require "partials/nav.php" ?>
 <?php require "../../php-prj/db/db-connection.php" ?>
 
-<?php
-// 1) Created the table
-$sql = "CREATE TABLE IF NOT EXISTS dashboard_data (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    imageUrl VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL
-)";
-
-    if (mysqli_query($conn, $sql)) {
-//        echo "Table 'dashboard_data' created successfully.<br>";
-    } else {
-//        echo "Error creating table: " . mysqli_error($conn);
-    }
-
-    ?>
 
 <main class="">
 
