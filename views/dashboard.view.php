@@ -22,7 +22,7 @@ $sql = "CREATE TABLE IF NOT EXISTS dashboard_data (
 <main class="">
 
 
-<!--    --><?php
+    <!--    --><?php
 //    // 3): Fetch and display the data
 //    $fetch_sql = "SELECT * FROM dashboard_data";
 //    $result = mysqli_query($conn, $fetch_sql);
@@ -57,18 +57,18 @@ $sql = "CREATE TABLE IF NOT EXISTS dashboard_data (
             <!-- modal component -->
             <?php include './components/add-new-item-modal.php'; ?>
 
-            <table class="min-w-full table-auto bg-gray-800 text-white">
+            <table class="min-w-full table-auto bg-gray-800 text-white max-h-[500px]">
                 <thead>
-                <tr>
-                    <th class="px-4 py-2 text-left">Image URL</th>
-                    <th class="px-4 py-2 text-left">Title</th>
-                    <th class="px-4 py-2 text-left">Description</th>
-                    <th class="px-4 py-2 text-left">Edit</th>
-                    <th class="px-4 py-2 text-left">Delete</th>
-                </tr>
+                    <tr>
+                        <th class="px-4 py-2 text-left">Image URL</th>
+                        <th class="px-4 py-2 text-left">Title</th>
+                        <th class="px-4 py-2 text-left">Description</th>
+                        <th class="px-4 py-2 text-left">Edit</th>
+                        <th class="px-4 py-2 text-left">Delete</th>
+                    </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-700">
-                <?php
+                    <?php
                 $fetch_sql = "SELECT * FROM dashboard_data";
                 if ($result = $conn->query($fetch_sql)) {
                     while ($row = $result->fetch_assoc()) {
@@ -77,20 +77,23 @@ $sql = "CREATE TABLE IF NOT EXISTS dashboard_data (
                         $desc = $row['Description'];
                         $id = $row['id'];
                         ?>
-                        <tr class="bg-gray-900 hover:bg-gray-700">
-                            <td class="px-4 py-2"><?php echo $imageUrl; ?></td>
-                            <td class="px-4 py-2"><?php echo $title; ?></td>
-                            <td class="px-4 py-2"><?php echo $desc; ?></td>
-                            <td class="px-4 py-2">
-                                <a href="updatedata.php?id=<?php echo $id; ?>" class="text-blue-400 hover:underline">Edit</a>
-                            </td>
-                            <td class="px-4 py-2">
-                                <a href="deletedata.php?id=<?php echo $id; ?>" class="text-red-400 hover:underline">Delete</a>
-                            </td>
-                        </tr>
-                        <?php
+                    <tr class="bg-gray-900 hover:bg-gray-700">
+                        <td class="px-4 py-2"><?php echo $imageUrl; ?></td>
+                        <td class="px-4 py-2"><?php echo $title; ?></td>
+                        <td class="px-4 py-2"><?php echo $desc; ?></td>
+                        <td class="px-4 py-2">
+                            <a href="updatedata.php?id=<?php echo $id; ?>"
+                                class="text-blue-400 hover:underline">Edit</a>
+                        </td>
+                        <td class="px-4 py-2">
+                            <a href="deletedata.php?id=<?php echo $id; ?>"
+                                class="text-red-400 hover:underline">Delete</a>
+                        </td>
+                    </tr>
+                    <?php
                     }
                 }
+                $conn->close()
                 ?>
                 </tbody>
             </table>
