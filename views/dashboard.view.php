@@ -87,6 +87,31 @@ function fetchData() {
     });
 }
 fetchData();
+document.querySelector('table').addEventListener('click', function(event) {
+    if (event.target.classList.contains('delete-btn')) {
+        const id = event.target.getAttribute('data-id');
+        deleteData(id);
+        fetchData();
+    }
+});
+
+function deleteData(id) {
+    let action = "dltRecord";
+    $.ajax({
+        url: "../controllers/delete-table-data.php",
+        type: "POST",
+        data: {
+            action: action,
+            id: id
+        },
+        success: function(data) {
+            alert(data)
+        },
+        error: function(error) {
+            console.error('Error deleting record:', error);
+        }
+    })
+}
 </script>
 
 <?php require "partials/footer.php" ?>

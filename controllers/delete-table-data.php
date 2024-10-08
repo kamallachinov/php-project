@@ -1,21 +1,23 @@
 <?php 
 require "../db/db-connection.php";
 
-$method = $_SERVER['REQUEST_METHOD'];
-$id =  mysqli_real_escape_string($conn, $_GET["id"]);
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == "dltRecord") {
+  if (isset($_POST['id'])) {
+      $id = $_POST['id'];
+      $sql = "DELETE FROM `dashboard_data` WHERE `id` = ?";
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
 
-if( $method === "DELETE"){
-    $sql_delete_query = "DELETE FROM `dashboard_data` WHERE `id` = $id";
-    
-    if (mysqli_query($conn, $sql_delete_query)) {
-        echo "Record deleted successfully";
-        header('Location: "http://localhost/php-prj/views/dashboard.view.php"');
-        exit;
+      if ($stmt->affected_rows > 0) {
+          echo "Record deleted successfully.";
       } else {
-        echo "Error deleting record: " . mysqli_error($conn);
-    }
-
-    $conn->close();
+          echo "Error deleting record: " . $conn->error;
+      }
+  } else {
+      echo "ID not provided.";
+  }
 }
 
+$conn->close();
 ?>
