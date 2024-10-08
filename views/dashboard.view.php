@@ -57,7 +57,7 @@ function fetchData() {
                     <td class="px-4 py-2">${row.Title}</td>
                     <td class="px-4 py-2">${row.Description}</td>
                     <td class="px-4 py-2">
-                        <a href="#" class="text-blue-400 hover:underline update-btn" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.title}" data-description="${row.description}">Edit</a>
+                        <a href="#" class="text-blue-400 hover:underline update-btn" id="openEditModal" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.title}" data-description="${row.description}">Edit</a>
                     </td>
                     <td class="px-4 py-2">
                         <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
@@ -79,10 +79,39 @@ document.querySelector('table').addEventListener('click', function(event) {
     }
 });
 
+document.querySelector('table').addEventListener('click', function(event) {
+    if (event.target.classList.contains('update-btn')) {
+        event.preventDefault();
+        const id = event.target.getAttribute('data-id');
+        const imageUrl = event.target.getAttribute('data-image');
+        const title = event.target.getAttribute('data-title');
+        const description = event.target.getAttribute('data-description');
+
+        openEditModal(id, imageUrl, title, description);
+    }
+});
+
 function deleteData(id) {
     let action = "dltRecord";
     $.ajax({
         url: "../controllers/delete-table-data.php",
+        type: "POST",
+        data: {
+            action: action,
+            id: id
+        },
+        success: function(data) {
+            alert(data)
+        },
+        error: function(error) {
+            console.error('Error deleting record:', error);
+        }
+    })
+}
+
+function editData(id) {
+    $.ajax({
+        url: "../controllers/update-table-data.php",
         type: "POST",
         data: {
             action: action,
