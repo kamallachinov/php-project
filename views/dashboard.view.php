@@ -21,33 +21,6 @@ $sql = "CREATE TABLE IF NOT EXISTS dashboard_data (
 
 <main class="">
 
-
-    <!--    --><?php
-//    // 3): Fetch and display the data
-//    $fetch_sql = "SELECT * FROM dashboard_data";
-//    $result = mysqli_query($conn, $fetch_sql);
-//
-//    if (mysqli_num_rows($result) > 0) {
-//        echo "<table class='table-auto border-collapse border border-gray-400 w-full'>";
-//        echo "<thead><tr><th class='border px-4 py-2'>Image URL</th><th class='border px-4 py-2'>Password</th><th class='border px-4 py-2'>Role</th></tr></thead>";
-//        echo "<tbody>";
-//
-//        while ($row = mysqli_fetch_assoc($result)) {
-//            echo "<tr>";
-//            echo "<td class='border px-4 py-2'>" . $row['imageUrl'] . "</td>";
-//            echo "<td class='border px-4 py-2'>" . $row['password'] . "</td>";
-//            echo "<td class='border px-4 py-2'>" . $row['role'] . "</td>";
-//            echo "</tr>";
-//        }
-//
-//        echo "</tbody>";
-//        echo "</table>";
-//    } else {
-//        echo "No data available.";
-//    }
-//    mysqli_close($conn);
-//    ?>
-
     <section class="dashboard-section my-12">
         <h2 class="text-center text-xl font-bold mb-3 underline">Hello. Welcome to the dashboard page!</h2>
 
@@ -68,38 +41,52 @@ $sql = "CREATE TABLE IF NOT EXISTS dashboard_data (
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-700">
-                    <?php
-                $fetch_sql = "SELECT * FROM dashboard_data";
-                if ($result = $conn->query($fetch_sql)) {
-                    while ($row = $result->fetch_assoc()) {
-                        $imageUrl = $row['imageUrl'];
-                        $title = $row['Title'];
-                        $desc = $row['Description'];
-                        $id = $row['id'];
-                        ?>
-                    <tr class="bg-gray-900 hover:bg-gray-700">
-                        <td class="px-4 py-2"><?php echo $imageUrl; ?></td>
-                        <td class="px-4 py-2"><?php echo $title; ?></td>
-                        <td class="px-4 py-2"><?php echo $desc; ?></td>
-                        <td class="px-4 py-2">
-                            <a href="updatedata.php?id=<?php echo $id; ?>"
-                                class="text-blue-400 hover:underline">Edit</a>
-                        </td>
-                        <td class="px-4 py-2">
-                            <a href="deletedata.php?id=<?php echo $id; ?>"
-                                class="text-red-400 hover:underline">Delete</a>
-                        </td>
-                    </tr>
-                    <?php
-                    }
-                }
-                $conn->close()
-                ?>
+
                 </tbody>
             </table>
         </div>
     </section>
 
 </main>
+
+<!-- jQuery library (required) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+function fetchData() {
+    $.ajax({
+        url: "../controllers/get-data.php",
+        type: "GET",
+        success: function(data) {
+            let tableBody = document.querySelector('table tbody');
+            tableBody.innerHTML = '';
+
+            let rows = JSON.parse(data);
+
+            rows.forEach(row => {
+                let tr = document.createElement('tr');
+                tr.className = "bg-gray-900 hover:bg-gray-700";
+                tr.innerHTML = `
+                    <td class="px-4 py-2">${row.imageUrl}</td>
+                    <td class="px-4 py-2">${row.Title}</td>
+                    <td class="px-4 py-2">${row.Description}</td>
+                    <td class="px-4 py-2">
+                        <a href="#" class="text-blue-400 hover:underline update-btn" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.title}" data-description="${row.description}">Edit</a>
+                    </td>
+                    <td class="px-4 py-2">
+                        <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
+                    </td>`;
+                tableBody.appendChild(tr);
+            });
+        },
+        error: function(error) {
+            console.error('There was a problem:', error);
+        }
+    });
+}
+fetchData();
+</script>
 
 <?php require "partials/footer.php" ?>
