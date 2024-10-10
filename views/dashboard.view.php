@@ -31,6 +31,9 @@
         </div>
     </section>
 
+    <!-- Edit Item Modal Component -->
+    <?php include './components/edit-item-modal.php'; ?>
+
 </main>
 
 <!-- jQuery library (required) -->
@@ -57,11 +60,11 @@ function fetchData() {
                     <td class="px-4 py-2">${row.Title}</td>
                     <td class="px-4 py-2">${row.Description}</td>
                     <td class="px-4 py-2">
-                        <a href="#" class="text-blue-400 hover:underline update-btn" id="openEditModal" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.title}" data-description="${row.description}">Edit</a>
+                        <button href="#" class="text-blue-400 hover:underline update-btn" id="openEditModal" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
                     </td>
                     <td class="px-4 py-2">
                         <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
-                    </td>`;
+                    </td>`
                 tableBody.appendChild(tr);
             });
         },
@@ -70,16 +73,16 @@ function fetchData() {
         }
     });
 }
+
 fetchData();
+
 document.querySelector('table').addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-btn')) {
         const id = event.target.getAttribute('data-id');
         deleteData(id);
         fetchData();
     }
-});
 
-document.querySelector('table').addEventListener('click', function(event) {
     if (event.target.classList.contains('update-btn')) {
         event.preventDefault();
         const id = event.target.getAttribute('data-id');
@@ -101,24 +104,7 @@ function deleteData(id) {
             id: id
         },
         success: function(data) {
-            alert(data)
-        },
-        error: function(error) {
-            console.error('Error deleting record:', error);
-        }
-    })
-}
-
-function editData(id) {
-    $.ajax({
-        url: "../controllers/update-table-data.php",
-        type: "POST",
-        data: {
-            action: action,
-            id: id
-        },
-        success: function(data) {
-            alert(data)
+            alert(data);
         },
         error: function(error) {
             console.error('Error deleting record:', error);

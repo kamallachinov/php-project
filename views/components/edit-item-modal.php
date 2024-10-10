@@ -1,11 +1,8 @@
 <?php require "../db/db-connection.php";?>
-<?php require "../controllers/get-single-data.php" ?>
-
-
 
 <div id="editModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center ">
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
-        <h2 class="text-lg font-bold mb-4">Add New Item</h2>
+        <h2 class="text-lg font-bold mb-4">Edit item</h2>
 
         <?php if (!empty($dbError)): ?>
         <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
@@ -31,8 +28,8 @@
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea id="description" name="description" rows="3"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"><?= htmlspecialchars($desc) ?></textarea>
-                <?php if (!empty($errors['desc'])): ?>
-                <!-- <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($errors['desc']) ?></p>
+                <!-- <?php if (!empty($errors['desc'])): ?>
+                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($errors['desc']) ?></p>
                 <?php endif; ?> -->
             </div>
             <div class="flex justify-end">
@@ -45,17 +42,20 @@
 </div>
 
 <script>
-const modal = document.getElementById('editModal');
-const openEditModalButton = document.getElementById('openEditModal');
-const closeEditModalButton = document.getElementById('closeEditModal');
+function openEditModal(id, imageUrl, title, description) {
+    const modal = document.getElementById('editModal');
+    const imageUrlField = document.getElementById('imageUrl');
+    const titleField = document.getElementById('title');
+    const descriptionField = document.getElementById('description');
 
-// Open modal when the button is clicked
-openEditModalButton?.addEventListener('click', () => {
+    imageUrlField.value = imageUrl;
+    titleField.value = title;
+    descriptionField.value = description;
+
     modal.classList.remove('hidden');
-});
+}
 
-// Close modal when the close button is clicked
-closeEditModalButton?.addEventListener('click', () => {
-    modal.classList.add('hidden');
+document.getElementById('closeEditModal').addEventListener('click', function() {
+    document.getElementById('editModal').classList.add('hidden');
 });
 </script>
