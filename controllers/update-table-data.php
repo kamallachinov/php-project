@@ -10,7 +10,8 @@ $editErrors = [
     'title' => '',
     'desc' => ''
 ];
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submitEditModal'])&& $_POST['action'] === "updateRecord") {
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submitEditModal']) && $_POST['action'] === "updateRecord") {
 
     $imageUrl = isset($_POST['imageUrl']) ? trim(htmlspecialchars($_POST['imageUrl'])) : '';
     $title = isset($_POST['title']) ? trim(htmlspecialchars($_POST['title'])) : '';

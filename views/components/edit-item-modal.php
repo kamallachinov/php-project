@@ -6,10 +6,10 @@
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-lg font-bold mb-4">Edit item</h2>
 
-        <?php if (!empty($dbError)): ?>
+        <!-- <?php if (!empty($dbError)): ?>
         <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
-        <?php endif; ?>
-        <form method="PUT">
+        <?php endif; ?> -->
+        <form method="POST">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
                 <input type="text" id="imageUrl" name="imageUrl" value="<?= htmlspecialchars($imageUrl) ?>"
@@ -37,7 +37,7 @@
             <div class="flex justify-end">
                 <button type="button" id="closeEditModal"
                     class="mr-2 bg-gray-400 px-3 py-2 rounded text-white">Cancel</button>
-                <button type="submit" name="submitEditModal"
+                <button type="submit" id="submit-edit-btn" name="submitEditModal"
                     class="bg-blue-500 px-3 py-2 rounded text-white">Submit</button>
             </div>
         </form>

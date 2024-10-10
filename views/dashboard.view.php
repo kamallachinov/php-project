@@ -84,17 +84,22 @@ document.querySelector('table').addEventListener('click', function(event) {
     }
 
     if (event.target.classList.contains('update-btn')) {
-        const data = {
-            id: Number(event.target.getAttribute('data-id')),
-            imageUrl: event.target.getAttribute('data-image'),
-            title: event.target.getAttribute('data-title'),
-            description: event.target.getAttribute('data-description')
-        }
-        update_data(data);
-        document.getElementById('editModal').classList.remove('hidden');
 
+        document.getElementById('editModal').classList.remove('hidden');
     }
 });
+
+document.getElementById("submit-edit-btn").addEventListener("click", function(event) {
+    console.log(event)
+    const data = {
+        id: Number(event.target.getAttribute('data-id')),
+        imageUrl: event.target.getAttribute('data-image'),
+        title: event.target.getAttribute('data-title'),
+        description: event.target.getAttribute('data-description')
+    }
+    console.log(data, 'aloooooooo');
+    update_data(data);
+})
 
 
 function deleteData(id) {
@@ -129,11 +134,12 @@ function postData(data) {
     })
 }
 
+// Update data function
 function update_data(data) {
-    let action = "updateAction"
+    let action = "updateAction";
     $.ajax({
         url: "../controllers/update-table-data.php",
-        type: "PUT",
+        type: "POST",
         data: {
             id: data.id,
             imageUrl: data.imageUrl,
@@ -141,9 +147,10 @@ function update_data(data) {
             desc: data.description,
             action: action
         },
-        success: function(data) {
-            // console.log(data, '14666')
-            alert(data);
+        success: function(response) {
+            alert(response);
+            fetchData();
+            document.getElementById('editModal').classList.add('hidden');
         },
         error: function(error) {
             console.error('Error updating record:', error);
