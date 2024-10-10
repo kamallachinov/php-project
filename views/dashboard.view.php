@@ -85,12 +85,18 @@ document.querySelector('table').addEventListener('click', function(event) {
 
     if (event.target.classList.contains('update-btn')) {
         event.preventDefault();
-        const id = event.target.getAttribute('data-id');
-        const imageUrl = event.target.getAttribute('data-image');
-        const title = event.target.getAttribute('data-title');
-        const description = event.target.getAttribute('data-description');
+        const data = {
+            id: event.target.getAttribute('data-id'),
+            imageUrl: event.target.getAttribute('data-image'),
+            title: event.target.getAttribute('data-title'),
+            description: event.target.getAttribute('data-description')
+        }
+        // const id = event.target.getAttribute('data-id');
+        // const imageUrl = event.target.getAttribute('data-image');
+        // const title = event.target.getAttribute('data-title');
+        // const description = event.target.getAttribute('data-description');
 
-        openEditModal(id, imageUrl, title, description);
+        update_data(data);
     }
 });
 
@@ -110,6 +116,36 @@ function deleteData(id) {
             console.error('Error deleting record:', error);
         }
     })
+}
+
+
+function postData(data) {
+    $.ajax({
+        url: "../controllers/add-table-data.php",
+        data: data,
+        success: function(data) {
+            alert(data)
+        },
+        error: function(error) {
+            console.error('Error post record:', error);
+        }
+    })
+}
+
+function update_data(data) {
+    console.log("Updating record with ID: " + data.id + ", title: " + data.title);
+    $.ajax({
+        url: "../controllers/update-table-data.php",
+        type: "POST",
+        data: data,
+        success: function(data) {
+            console.log(data)
+            alert(data);
+        },
+        error: function(error) {
+            console.error('Error updating record:', error);
+        }
+    });
 }
 </script>
 
