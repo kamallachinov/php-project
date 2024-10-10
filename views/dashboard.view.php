@@ -84,22 +84,21 @@ document.querySelector('table').addEventListener('click', function(event) {
     }
 
     if (event.target.classList.contains('update-btn')) {
-
+        document.getElementById("submit-edit-btn").addEventListener("click", function() {
+            const data = {
+                id: Number(event.target.getAttribute('data-id')),
+                imageUrl: document.getElementById("imageUrl").textContent,
+                title: document.getElementById('title').textContent,
+                desc: document.getElementById('description').textContent
+            }
+            console.log(data, 'aloooooooo');
+            update_data(data);
+        })
         document.getElementById('editModal').classList.remove('hidden');
     }
 });
 
-document.getElementById("submit-edit-btn").addEventListener("click", function(event) {
-    console.log(event)
-    const data = {
-        id: Number(event.target.getAttribute('data-id')),
-        imageUrl: event.target.getAttribute('data-image'),
-        title: event.target.getAttribute('data-title'),
-        description: event.target.getAttribute('data-description')
-    }
-    console.log(data, 'aloooooooo');
-    update_data(data);
-})
+
 
 
 function deleteData(id) {
@@ -121,29 +120,29 @@ function deleteData(id) {
 }
 
 
-function postData(data) {
-    $.ajax({
-        url: "../controllers/add-table-data.php",
-        data: data,
-        success: function(data) {
-            alert(data)
-        },
-        error: function(error) {
-            console.error('Error post record:', error);
-        }
-    })
-}
+// function postData(data) {
+//     $.ajax({
+//         url: "../controllers/add-table-data.php",
+//         data: data,
+//         success: function(data) {
+//             alert(data)
+//         },
+//         error: function(error) {
+//             console.error('Error post record:', error);
+//         }
+//     })
+// }
 
 function update_data(data) {
     let action = "updateAction";
     $.ajax({
         url: "../controllers/update-table-data.php",
-        type: "POST",
+        type: "PUT",
         data: {
             id: data.id,
             imageUrl: data.imageUrl,
             title: data.title,
-            desc: data.description,
+            desc: data.desc,
             action: action
         },
         success: function(response) {
