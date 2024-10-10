@@ -11,7 +11,8 @@ $editErrors = [
     'desc' => ''
 ];
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitEditModal'])) {
-
+    echo "Received POST request:<br>";
+    var_dump($_POST);
     $imageUrl = isset($_POST['imageUrl']) ? trim(htmlspecialchars($_POST['imageUrl'])) : '';
     $title = isset($_POST['title']) ? trim(htmlspecialchars($_POST['title'])) : '';
     $desc = isset($_POST['desc']) ? trim(htmlspecialchars($_POST['desc'])) : '';
@@ -49,6 +50,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitEditModal'])) {
 } else {
     echo "Invalid request.";
 }
-?>
-
 ?>

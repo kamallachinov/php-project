@@ -60,7 +60,7 @@ function fetchData() {
                     <td class="px-4 py-2">${row.Title}</td>
                     <td class="px-4 py-2">${row.Description}</td>
                     <td class="px-4 py-2">
-                        <button href="#" class="text-blue-400 hover:underline update-btn" id="openEditModal" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
+                        <button href="#" class="text-blue-400 hover:underline update-btn" id="editModal" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
                     </td>
                     <td class="px-4 py-2">
                         <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
@@ -84,21 +84,17 @@ document.querySelector('table').addEventListener('click', function(event) {
     }
 
     if (event.target.classList.contains('update-btn')) {
-        event.preventDefault();
         const data = {
             id: event.target.getAttribute('data-id'),
             imageUrl: event.target.getAttribute('data-image'),
             title: event.target.getAttribute('data-title'),
             description: event.target.getAttribute('data-description')
         }
-        // const id = event.target.getAttribute('data-id');
-        // const imageUrl = event.target.getAttribute('data-image');
-        // const title = event.target.getAttribute('data-title');
-        // const description = event.target.getAttribute('data-description');
-
         update_data(data);
     }
 });
+
+
 
 function deleteData(id) {
     let action = "dltRecord";
@@ -137,7 +133,12 @@ function update_data(data) {
     $.ajax({
         url: "../controllers/update-table-data.php",
         type: "POST",
-        data: data,
+        data: {
+            id: data.id,
+            imageUrl: data.imageUrl,
+            title: data.title,
+            desc: data.description,
+        },
         success: function(data) {
             console.log(data)
             alert(data);
