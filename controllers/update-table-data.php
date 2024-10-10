@@ -10,9 +10,8 @@ $editErrors = [
     'title' => '',
     'desc' => ''
 ];
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitEditModal'])) {
-    echo "Received POST request:<br>";
-    var_dump($_POST);
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submitEditModal'])&& $_POST['action'] === "updateRecord") {
+
     $imageUrl = isset($_POST['imageUrl']) ? trim(htmlspecialchars($_POST['imageUrl'])) : '';
     $title = isset($_POST['title']) ? trim(htmlspecialchars($_POST['title'])) : '';
     $desc = isset($_POST['desc']) ? trim(htmlspecialchars($_POST['desc'])) : '';
@@ -23,8 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitEditModal'])) {
 
     if (empty($editErrors['imageUrl']) && empty($editErrors['title']) && empty($editErrors['desc'])) {
 
-        $id = intval($_POST['id']); // Get the ID of the item being edited
-        $sql = "UPDATE dashboard_data SET imageUrl = ?, title = ?, description = ? WHERE id = ?";
+        $id = $_POST['id']; 
+        $sql = "UPDATE dashboard_data SET imageUrl = ?, Title = ?, Description = ? WHERE id = ?";
 
         if ($stmt = $conn->prepare($sql)) {
             // Bind parameters

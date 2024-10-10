@@ -3,7 +3,7 @@
 <?php require "../../php-prj/db/db-connection.php" ?>
 
 
-<main class="">
+<main>
 
     <section class="dashboard-section my-12">
         <h2 class="text-center text-xl font-bold mb-3 underline">Hello. Welcome to the dashboard page!</h2>
@@ -60,7 +60,7 @@ function fetchData() {
                     <td class="px-4 py-2">${row.Title}</td>
                     <td class="px-4 py-2">${row.Description}</td>
                     <td class="px-4 py-2">
-                        <button href="#" class="text-blue-400 hover:underline update-btn" id="editModal" data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
+                        <button href="#" class="text-blue-400 hover:underline update-btn"  data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
                     </td>
                     <td class="px-4 py-2">
                         <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
@@ -85,15 +85,16 @@ document.querySelector('table').addEventListener('click', function(event) {
 
     if (event.target.classList.contains('update-btn')) {
         const data = {
-            id: event.target.getAttribute('data-id'),
+            id: Number(event.target.getAttribute('data-id')),
             imageUrl: event.target.getAttribute('data-image'),
             title: event.target.getAttribute('data-title'),
             description: event.target.getAttribute('data-description')
         }
         update_data(data);
+        document.getElementById('editModal').classList.remove('hidden');
+
     }
 });
-
 
 
 function deleteData(id) {
@@ -129,18 +130,19 @@ function postData(data) {
 }
 
 function update_data(data) {
-    console.log("Updating record with ID: " + data.id + ", title: " + data.title);
+    let action = "updateAction"
     $.ajax({
         url: "../controllers/update-table-data.php",
-        type: "POST",
+        type: "PUT",
         data: {
             id: data.id,
             imageUrl: data.imageUrl,
             title: data.title,
             desc: data.description,
+            action: action
         },
         success: function(data) {
-            console.log(data)
+            // console.log(data, '14666')
             alert(data);
         },
         error: function(error) {
@@ -148,6 +150,10 @@ function update_data(data) {
         }
     });
 }
+
+document.getElementById('closeEditModal').addEventListener('click', function() {
+    document.getElementById('editModal').classList.add('hidden');
+});
 </script>
 
 <?php require "partials/footer.php" ?>
