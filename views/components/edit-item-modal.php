@@ -43,22 +43,3 @@
         </form>
     </div>
 </div>
-
-<script>
-// function openEditModal(id, imageUrl, title, description) {
-//     const modal = document.getElementById('editModal');
-//     const imageUrlField = document.getElementById('imageUrl');
-//     const titleField = document.getElementById('title');
-//     const descriptionField = document.getElementById('description');
-
-//     imageUrlField.innerHTML = imageUrl;
-//     titleField.innerHTML = title;
-//     descriptionField.innerHTML = description;
-
-//     modal.classList.remove('hidden');
-// }
-
-// document.getElementById('closeEditModal').addEventListener('click', function() {
-//     document.getElementById('editModal').classList.add('hidden');
-// });
-</script>

@@ -134,7 +134,6 @@ function postData(data) {
     })
 }
 
-// Update data function
 function update_data(data) {
     let action = "updateAction";
     $.ajax({
