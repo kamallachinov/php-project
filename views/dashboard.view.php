@@ -158,27 +158,17 @@ function update_data(data) {
         },
         success: function(response) {
             console.log(response, 'res');
-
-            console.log(Object.values(response.errors));
-
-            if (response.errors && Object.values(response.errors).length > 0) {
-                alert(response.message);
-                editModalWrapper.classList.remove('hidden');
-            } else {
-                alert(response.message);
-                console.log(document.getElementById('editModal'), 'editModalWrapper');
-                editModalWrapper.classList.add('hidden');
-                fetchData();
-            }
-
+            alert(response.message);
+            fetchData();
+            editModalWrapper.classList.add('hidden');
         },
         error: function(error) {
             console.error('Error updating record:', error);
             alert("An error occurred while updating the record. Please try again.");
+            editModalWrapper.classList.remove('hidden');
         }
     });
 }
-
 document.getElementById('closeEditModal').addEventListener('click', function() {
     editModalWrapper.classList.add('hidden');
 });

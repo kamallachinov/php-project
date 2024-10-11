@@ -2,9 +2,10 @@
 require "../db/db-connection.php";
 // require "../controllers/update-table-data.php";
 
-$showModal = !empty($editErrors['imageUrl']) || !empty($editErrors['title']) || !empty($editErrors['desc']);
+// $showModal = !empty($editErrors['imageUrl']) || !empty($editErrors['title']) || !empty($editErrors['desc']);
+
 ?>
-<div id="editModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
+<div id="editModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden ">
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-lg font-bold mb-4">Edit item</h2>
 

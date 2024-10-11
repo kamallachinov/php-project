@@ -48,6 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
     header('Content-Type: application/json');
     echo json_encode($response); 
 } else {
-    header('Content-Type: application/json'); 
+    // header('Content-Type: application/json'); 
     echo json_encode(['message' => 'Invalid request method.']); 
 }
