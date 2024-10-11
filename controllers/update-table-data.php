@@ -17,16 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
     $title = isset($_POST['title']) ? trim(htmlspecialchars($_POST['title'])) : '';
     $desc = isset($_POST['desc']) ? trim(htmlspecialchars($_POST['desc'])) : '';
 
-    echo $_POST['imageUrl'];
-    echo $_POST['title'];
-    echo $_POST['desc'];
-
     $editErrors['imageUrl'] = empty($imageUrl) ? "Image URL field cannot be empty!" : '';
     $editErrors['title'] = empty($title) ? "Title field cannot be empty!" : '';
     $editErrors['desc'] = empty($desc) ? "Description field cannot be empty!" : '';
 
     if (empty($editErrors['imageUrl']) && empty($editErrors['title']) && empty($editErrors['desc'])) {
-        echo "salam";
+       var_dump($editErrors);
         $id = $_POST['id']; 
         $sql = "UPDATE `dashboard_data` SET `imageUrl` = ?, `Title` = ?, `Description` = ? WHERE `id` = ?";
 

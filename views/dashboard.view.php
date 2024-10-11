@@ -1,10 +1,10 @@
-<?php require "partials/head.php" ?>
-<?php require "partials/nav.php" ?>
-<?php require "../../php-prj/db/db-connection.php" ?>
-
+<?php 
+require "partials/head.php" ;
+require "partials/nav.php";
+require "../../php-prj/db/db-connection.php";
+?>
 
 <main>
-
     <section class="dashboard-section my-12">
         <h2 class="text-center text-xl font-bold mb-3 underline">Hello. Welcome to the dashboard page!</h2>
 
@@ -30,10 +30,8 @@
             </table>
         </div>
     </section>
-
     <!-- Edit Item Modal Component -->
     <?php include './components/edit-item-modal.php'; ?>
-
 </main>
 
 <!-- jQuery library (required) -->
@@ -154,7 +152,6 @@ function update_data(data) {
             title: data.title,
             desc: data.desc,
             action: action,
-            // submitEditModal: true
         },
         success: function(response) {
             alert(response);

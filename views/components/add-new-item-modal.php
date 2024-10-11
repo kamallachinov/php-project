@@ -1,5 +1,7 @@
-<?php  require "../controllers/add-table-data.php" ?>
-<?php  $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);?>
+<?php  
+    require "../controllers/add-table-data.php" ;
+    $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);
+?>
 
 <div id="modal"
     class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center <?= $showModal ? '' : 'hidden'; ?>">

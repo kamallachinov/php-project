@@ -10,11 +10,10 @@ $aboutInfo = [
         'Mike Johnson - Lead Developer'
     ]
 ];
+
+require "partials/head.php";
+require "partials/nav.php" ;
 ?>
-
-<?php require "partials/head.php" ?>
-
-<?php require "partials/nav.php" ?>
 
 
 <!-- Main Content Section -->
@@ -48,9 +47,9 @@ $aboutInfo = [
         <h2 class="text-2xl font-semibold mb-4">Meet Our Team</h2>
         <ul class="list-disc list-inside">
             <?php foreach ($aboutInfo['team'] as $member): ?>
-                <li class="text-lg">
-                    <?= htmlspecialchars($member) ?>
-                </li>
+            <li class="text-lg">
+                <?= htmlspecialchars($member) ?>
+            </li>
             <?php endforeach; ?>
         </ul>
     </section>
@@ -58,5 +57,3 @@ $aboutInfo = [
 
 <!-- Footer Section -->
 <?php include "./partials/footer.php"; ?>
-
-

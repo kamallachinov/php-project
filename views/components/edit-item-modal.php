@@ -1,14 +1,17 @@
-<?php require "../db/db-connection.php";?>
-<?php  $showModal = !empty($editErrors['imageUrl']) || !empty($editErrors['title']) || !empty($editErrors['desc']);?>
+<?php
+require "../db/db-connection.php";
+// require "../controllers/update-table-data.php";
 
+$showModal = !empty($editErrors['imageUrl']) || !empty($editErrors['title']) || !empty($editErrors['desc']);
+?>
 <div id="editModal"
     class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center <?= $showModal ? '' : 'hidden'; ?>">
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-lg font-bold mb-4">Edit item</h2>
 
-        <!-- <?php if (!empty($dbError)): ?>
+        <?php if (!empty($dbError)): ?>
         <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
-        <?php endif; ?> -->
+        <?php endif; ?>
         <form method="POST">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>

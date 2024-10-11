@@ -1,13 +1,12 @@
 <?php
 $pageTitle = "Home page";
+require "partials/head.php" ;
+require "partials/nav.php" ;
 ?>
-<?php require "partials/head.php" ?>
-<?php require "partials/nav.php" ?>
 
-<main >
+<main>
     <h1 class="text-center font-bold text-2xl mt-3">Hello. Welcome to the home page!</h1>
     <?php require "sections/trending-images.php"; ?>
-
 </main>
 
 <?php require "partials/footer.php" ?>
