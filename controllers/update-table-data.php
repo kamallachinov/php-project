@@ -10,6 +10,7 @@ $editErrors = [
     'title' => '',
     'desc' => ''
 ];
+$response = ['message' => '', 'errors' => $editErrors];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction") {
 
@@ -22,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
     $editErrors['desc'] = empty($desc) ? "Description field cannot be empty!" : '';
 
     if (empty($editErrors['imageUrl']) && empty($editErrors['title']) && empty($editErrors['desc'])) {
-       var_dump($editErrors);
         $id = $_POST['id']; 
         $sql = "UPDATE `dashboard_data` SET `imageUrl` = ?, `Title` = ?, `Description` = ? WHERE `id` = ?";
 
@@ -31,23 +31,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
             $stmt->bind_param("sssi", $imageUrl, $title, $desc, $id);
 
             if ($stmt->execute()) {
-                echo "Record updated successfully!";
+                $response['message'] = "Record was successfully updated!";
             } else {
-                echo "Error updating record: " . $stmt->error;
+                $response['message'] = "Error updating record: " . $stmt->error;
             }
 
             $stmt->close();
         } else {
-            echo "Error preparing update statement: " . $conn->error;
+            $response['message'] = "Error preparing update statement: " . $conn->error;
         }
     } else {
-        foreach ($editErrors as $field => $error) {
-            if (!empty($error)) {
-                echo $error . "<br>";
-            }
-        }
+        $response['errors'] = $editErrors;
+        $response['message'] = "Validation errors occurred.";
     }
+    
+    header('Content-Type: application/json');
+    echo json_encode($response); 
 } else {
-    echo "Invalid request.";
+    header('Content-Type: application/json'); 
+    echo json_encode(['message' => 'Invalid request method.']); 
 }
-?>

@@ -40,6 +40,9 @@ require "../../php-prj/db/db-connection.php";
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
+const editModalWrapper = document.getElementById('editModal');
+const imageUrlFieldEditModal = document.getElementById('ImageUrlEditModal');
+
 function fetchData() {
     $.ajax({
         url: "../controllers/get-data.php",
@@ -83,13 +86,13 @@ document.querySelector('table').addEventListener('click', function(event) {
 
     if (event.target.classList.contains('update-btn')) {
         const id = event.target.getAttribute('data-id');
-        document.getElementById('ImageUrlEditModal').value = event.target.getAttribute('data-image');
+        imageUrlFieldEditModal.value = event.target.getAttribute('data-image');
         document.getElementById('titleEditModal').value = event.target.getAttribute('data-title');
         document.getElementById('descriptionEditModal').value = event.target.getAttribute('data-description');
 
         document.getElementById('submit-edit-btn').setAttribute('data-id', id);
 
-        document.getElementById('editModal').classList.remove('hidden');
+        editModalWrapper.classList.remove('hidden');
     }
 
 });
@@ -99,7 +102,7 @@ document.getElementById("submit-edit-btn").addEventListener("click", function(e)
     const id = document.getElementById("submit-edit-btn").getAttribute('data-id');
     const data = {
         id: Number(id),
-        imageUrl: document.getElementById("ImageUrlEditModal").value,
+        imageUrl: imageUrlFieldEditModal.value,
         title: document.getElementById('titleEditModal').value,
         desc: document.getElementById('descriptionEditModal').value
     }
@@ -154,18 +157,30 @@ function update_data(data) {
             action: action,
         },
         success: function(response) {
-            alert(response);
-            fetchData();
-            document.getElementById('editModal').classList.add('hidden');
+            console.log(response, 'res');
+
+            console.log(Object.values(response.errors));
+
+            if (response.errors && Object.values(response.errors).length > 0) {
+                alert(response.message);
+                editModalWrapper.classList.remove('hidden');
+            } else {
+                alert(response.message);
+                console.log(document.getElementById('editModal'), 'editModalWrapper');
+                document.getElementById('editModal').classList.add('hidden');
+                fetchData();
+            }
+
         },
         error: function(error) {
             console.error('Error updating record:', error);
+            alert("An error occurred while updating the record. Please try again.");
         }
     });
 }
 
 document.getElementById('closeEditModal').addEventListener('click', function() {
-    document.getElementById('editModal').classList.add('hidden');
+    editModalWrapper.classList.add('hidden');
 });
 </script>
 
