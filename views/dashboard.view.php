@@ -84,20 +84,30 @@ document.querySelector('table').addEventListener('click', function(event) {
     }
 
     if (event.target.classList.contains('update-btn')) {
-        document.getElementById("submit-edit-btn").addEventListener("click", function(e) {
-            e.preventDefault();
-            const data = {
-                id: Number(event.target.getAttribute('data-id')),
-                imageUrl: document.getElementById("ImageUrlEditModal").value,
-                title: document.getElementById('titleEditModal').value,
-                desc: document.getElementById('descriptionEditModal').value
-            }
-            update_data(data);
-        })
+        const id = event.target.getAttribute('data-id');
+        document.getElementById('ImageUrlEditModal').value = event.target.getAttribute('data-image');
+        document.getElementById('titleEditModal').value = event.target.getAttribute('data-title');
+        document.getElementById('descriptionEditModal').value = event.target.getAttribute('data-description');
+
+        document.getElementById('submit-edit-btn').setAttribute('data-id', id);
+
         document.getElementById('editModal').classList.remove('hidden');
     }
-});
 
+});
+document.getElementById("submit-edit-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+
+    const id = document.getElementById("submit-edit-btn").getAttribute('data-id');
+    const data = {
+        id: Number(id),
+        imageUrl: document.getElementById("ImageUrlEditModal").value,
+        title: document.getElementById('titleEditModal').value,
+        desc: document.getElementById('descriptionEditModal').value
+    }
+
+    update_data(data);
+});
 
 
 
