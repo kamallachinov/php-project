@@ -167,7 +167,7 @@ function update_data(data) {
             } else {
                 alert(response.message);
                 console.log(document.getElementById('editModal'), 'editModalWrapper');
-                document.getElementById('editModal').classList.add('hidden');
+                editModalWrapper.classList.add('hidden');
                 fetchData();
             }
 
