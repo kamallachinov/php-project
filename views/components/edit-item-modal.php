@@ -12,7 +12,7 @@
         <form method="POST">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
-                <input type="text" id="imageUrl" name="imageUrl" value="<?= htmlspecialchars($imageUrl) ?>"
+                <input type="text" id="ImageUrlEditModal" name="imageUrl"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" />
                 <?php if (!empty($editErrors['imageUrl'])): ?>
                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($editErrors['imageUrl']) ?></p>
@@ -20,7 +20,7 @@
             </div>
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="title" name="title" value="<?= htmlspecialchars($title) ?>"
+                <input type="text" id="titleEditModal" name="title" value="<?= htmlspecialchars($title) ?>"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
                 <?php if (!empty($editErrors['title'])): ?>
                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($editErrors['title']) ?></p>
@@ -28,7 +28,7 @@
             </div>
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea id="description" name="description" rows="3"
+                <textarea id="descriptionEditModal" name="desc" rows="3"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"><?= htmlspecialchars($desc) ?></textarea>
                 <?php if (!empty($editErrors['desc'])): ?>
                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($editErrors['desc']) ?></p>
