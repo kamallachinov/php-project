@@ -30,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             if ($result->num_rows == 1) {
                 $user = $result->fetch_assoc();
 
-                // Verify the password (assuming it's stored securely, such as hashed)
                 if ($password == $user['password']) {
                     $isAuthenticated = true;
                     $response['message'] = "Login successful! Welcome, " . htmlspecialchars($user['username']);
