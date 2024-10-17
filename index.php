@@ -1,6 +1,8 @@
 <?php
-    $isAuth = false;
-if(!$isAuth){
+
+require  __DIR__ .  '/controllers/auth/login.php';
+
+if(!$isAuthenticated){
     header("Location: ./views/auth/login.view.php");
     require "./views/auth/login.view.php";
 }else{
