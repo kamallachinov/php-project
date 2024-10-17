@@ -157,7 +157,6 @@ function update_data(data) {
             action: action,
         },
         success: function(response) {
-            console.log(response, 'res');
             alert(response.message);
             fetchData();
             editModalWrapper.classList.add('hidden');
