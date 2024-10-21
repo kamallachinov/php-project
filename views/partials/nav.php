@@ -33,7 +33,40 @@ $result = $stmt->get_result();
                     </a>
                 </li>
                 <?php endwhile; ?>
+                <li>
+                    <form action="" method="POST">
+                        <button class="btn btn-danger" id="logoutBtn">Logout</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+
+<!-- jQuery library (required) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+document.getElementById("logoutBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    logout();
+})
+
+
+function logout() {
+    $.ajax({
+        url: "php-prj/../../controllers/auth/logout.php",
+        type: "POST",
+        success: function() {
+            console.log("User logged out sucessfully!");
+            window.location.href = "/php-prj/views/auth/login.view.php";
+        },
+        error: function() {
+            console.error("Error occured!")
+        }
+    })
+}
+</script>

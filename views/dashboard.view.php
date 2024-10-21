@@ -57,15 +57,15 @@ function fetchData() {
                 let tr = document.createElement('tr');
                 tr.className = "bg-gray-900 hover:bg-gray-700";
                 tr.innerHTML = `
-                    <td class="px-4 py-2">${row.imageUrl}</td>
-                    <td class="px-4 py-2">${row.Title}</td>
-                    <td class="px-4 py-2">${row.Description}</td>
-                    <td class="px-4 py-2">
-                        <button href="#" class="text-blue-400 hover:underline update-btn"  data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
-                    </td>
-                    <td class="px-4 py-2">
-                        <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
-                    </td>`
+                        <td class="px-4 py-2">${row.imageUrl}</td>
+                        <td class="px-4 py-2">${row.Title}</td>
+                        <td class="px-4 py-2">${row.Description}</td>
+                        <td class="px-4 py-2">
+                            <button href="#" class="text-blue-400 hover:underline update-btn"  data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
+                        </td>
+                        <td class="px-4 py-2">
+                            <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
+                        </td>`
                 tableBody.appendChild(tr);
             });
         },
