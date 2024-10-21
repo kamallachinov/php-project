@@ -1,4 +1,7 @@
 <?php
+
+$isLoading = true;
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -13,7 +16,7 @@ if (isset($_GET['id'])) {
         $imageUrl = $row['imageUrl'];
         $title = $row['Title'];
         $desc = $row['Description'];
-       
+        $isLoading = false;
     } else {
         echo "No data found for the specified ID.";
         exit;

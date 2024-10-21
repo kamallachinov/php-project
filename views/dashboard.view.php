@@ -81,7 +81,7 @@ document.querySelector('table').addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-btn')) {
         const id = event.target.getAttribute('data-id');
         deleteData(id);
-        fetchData();
+
     }
 
     if (event.target.classList.contains('update-btn')) {
@@ -123,6 +123,7 @@ function deleteData(id) {
         },
         success: function(data) {
             alert(data);
+            fetchData();
         },
         error: function(error) {
             console.error('Error deleting record:', error);

@@ -4,7 +4,12 @@
     require "../../controllers/get-single-data.php";
     require "../partials/nav.php";
     require "../partials/head.php";
+
+    if($isLoading){
+        require "./loading-spinner.php";
+    }
 ?>
+
 
 <div class="container mx-auto my-8 p-4 bg-white rounded-lg shadow">
     <img class="rounded-lg w-full object-cover h-64" src="<?php echo htmlspecialchars($imageUrl); ?>"
