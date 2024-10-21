@@ -5,9 +5,6 @@
     require "../partials/nav.php";
     require "../partials/head.php";
 
-    if($isLoading){
-        require "./loading-spinner.php";
-    }
 ?>
 
 
