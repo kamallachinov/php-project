@@ -1,9 +1,10 @@
 <?php
+session_start();  
 require __DIR__ . '/../../db/db-connection.php';
-    $isAuthenticated = false;
-    $loginErrors = [];
-    $response = ['message' => '', 'errors' => $loginErrors];
 
+$isAuthenticated = false;
+$loginErrors = [];
+$response = ['message' => '', 'errors' => $loginErrors];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == "loginAction") {
 
@@ -16,12 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     if (empty($password)) {
         $loginErrors['password'] = 'Password is required';
     }
-    error_log(print_r($_POST, true));
+
     if (empty($loginErrors['username']) && empty($loginErrors['password'])) {
 
         $sql = "SELECT * FROM `auth-data` WHERE username = ?";
 
         if ($stmt = $conn->prepare($sql)) {
+            print_r($stmt);
 
             $stmt->bind_param("s", $username);
             $stmt->execute();
@@ -32,34 +34,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
                 if ($password == $user['password']) {
                     $isAuthenticated = true;
-                    $response['message'] = "Login successful! Welcome, " . htmlspecialchars($user['username']);
+                    $_SESSION['message'] = "Login successful! Welcome, " . htmlspecialchars($user['username']);
+                    header('Location: ../../views/dashboard.view.php'); 
+                    exit();
                 } else {
-                    $loginErrors['password'] = "Invalid password";
+                    $loginErrors['password'] = "Invalid username or password";
                 }
             } else {
-                $response['message'] = "Invalid username or password";
+                $loginErrors['username'] = "Invalid username or password";
             }
             $stmt->close();
         } else {
-            $response['message'] = "SQL error: " . $conn->error;
+            $_SESSION['message'] = "SQL error: " . $conn->error;
         }
-        $response['errors'] = $loginErrors;
     }
 
-    if (!empty($loginErrors['username']) || !empty($loginErrors['password'])) {
-        $response['errors'] = $loginErrors;
-    } else {
-        $response['errors'] = [];
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($response);
+    $_SESSION['loginErrors'] = $loginErrors;
+    $_SESSION['oldInputs'] = ['username' => $username];
+    
+    header('Location: ../../views/auth/login.view.php');
+    exit();
 }
-
-
-
-
-
-
-
-
