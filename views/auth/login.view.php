@@ -23,7 +23,8 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
         <form method="POST" action="../../controllers/auth/login.php">
             <div class="mb-4">
                 <label for="username" class="block text-gray-700">Username</label>
-                <input type="text" id="username" name="username"
+                <input type="text" id="username" name="username" autofocus="autofocus" autocomplete="off"
+                    autocorrect="off" autocapitalize="off" spellcheck="false"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 "
                     value="<?= htmlspecialchars($oldInputs['username'] ?? '') ?>">
                 <?php if (!empty($loginErrors['username'])): ?>
@@ -33,7 +34,8 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
 
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">Password</label>
-                <input type="password" id="password" name="password"
+                <input type="password" id="password" name="password" autocomplete="off" autocorrect="off"
+                    autocapitalize="off" spellcheck="false"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <?php if (!empty($loginErrors['password'])): ?>
                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($loginErrors['password']) ?></p>
