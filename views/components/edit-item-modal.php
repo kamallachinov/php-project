@@ -1,9 +1,5 @@
 <?php
 require "../db/db-connection.php";
-// require "../controllers/update-table-data.php";
-
-// $showModal = !empty($editErrors['imageUrl']) || !empty($editErrors['title']) || !empty($editErrors['desc']);
-
 ?>
 <div id="editModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden ">
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
@@ -46,3 +42,15 @@ require "../db/db-connection.php";
         </form>
     </div>
 </div>
+
+<script src="../utils/modal-viewer/modal-viewer.js"></script>
+<script>
+// document.getElementById('openModal')?.addEventListener('click', () => {
+//     console.log("clciked")
+//     modalViewer('editModal', true)
+// });
+document.getElementById('closeEditModal')?.addEventListener('click', () => {
+    console.log("clciked close")
+    modalViewer('editModal', false)
+});
+</script>

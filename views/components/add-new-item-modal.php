@@ -1,6 +1,7 @@
-<?php  
-    require "../controllers/add-table-data.php" ;
-    $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);
+<?php
+require "../controllers/add-table-data.php";
+// require "../utils/modal-viewer/modal-viewer.js";
+$showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);
 ?>
 
 <div id="modal"
@@ -46,18 +47,8 @@
     </div>
 </div>
 
+<script src="../utils/modal-viewer/modal-viewer.js"></script>
 <script>
-const modal = document.getElementById('modal');
-const openModalButton = document.getElementById('openModal');
-const closeModalButton = document.getElementById('closeModal');
-
-// Open modal when the button is clicked
-openModalButton?.addEventListener('click', () => {
-    modal.classList.remove('hidden');
-});
-
-// Close modal when the close button is clicked
-closeModalButton?.addEventListener('click', () => {
-    modal.classList.add('hidden');
-});
+document.getElementById('openModal')?.addEventListener('click', () => modalViewer('modal', true));
+document.getElementById('closeModal')?.addEventListener('click', () => modalViewer('modal', false));
 </script>
