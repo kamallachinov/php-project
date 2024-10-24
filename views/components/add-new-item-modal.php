@@ -48,25 +48,31 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
     </div>
 </div>
 
-<script src="../../utils/modal-viewer/modal-viewer.js"></script>
 <!-- jQuery library (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<!-- Toastify -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script src="../../utils/modal-viewer/modal-viewer.js"></script>
+
 <script>
 document.getElementById(("add-new-item-btn")).addEventListener("click", (e) => {
+    e.preventDefault();
     const data = {
         imageUrl: document.getElementById("imageUrl").value,
         title: document.getElementById("title").value,
         desc: document.getElementById("description").value
+    };
+
+    if (!data.imageUrl || !data.title || !data.desc) {
+        alert("All fields are required.");
+        return;
     }
+
     postData(data);
-    // if (data.imageUrl === "" || data.title === "" || data.desc === "") {
-    //     alert("All fields are required.");
-    // } else {
-    //     postData(data);
-    // }
 })
 
 function postData(data) {
@@ -79,13 +85,13 @@ function postData(data) {
             description: data.desc
         },
         success: function(response) {
-            console.log(response, 'response');
-            if (response && typeof response === "string") {
+            if (typeof response === "string") {
                 response = JSON.parse(response);
+                console.log(response, 'response');
             }
 
             if (response.message) {
-                alert(response.message);
+                toastr.success(response.message)
             }
 
             fetchData();
@@ -93,7 +99,10 @@ function postData(data) {
         },
         error: function(error) {
             console.error('Error deleting record:', error);
-            alert(response.error + ": " + JSON.stringify(response.errorData));
+            if (response.error) {
+                alert(response.error);
+            }
+            // alert(response.error + ": " + JSON.stringify(response.errorData));
             modalViewer("modal", true)
         }
     })

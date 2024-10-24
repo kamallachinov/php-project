@@ -12,8 +12,7 @@ $addErrors = [
     'title' => '',
     'desc' => ''
 ];
-
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['post-data-submit'])) {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $imageUrl = isset($_POST['imageUrl']) ? trim(htmlspecialchars($_POST['imageUrl'])) : '';
     $title = isset($_POST['title']) ? trim(htmlspecialchars($_POST['title'])) : '';
@@ -28,23 +27,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['post-data-submit'])) 
         $stmt->bind_param("sss", $imageUrl, $title, $desc);
 
         if ($stmt->execute()) {
-            $response = $responseHandler->successResponse("Posted successfully", [
+            header('Content-Type: application/json');
+
+            echo  json_encode($response = $responseHandler->successResponse("Posted successfully", [
                 'imageUrl' => $imageUrl,
                 'title' => $title,
                 'description' => $desc
-            ]);
+            ]));
             $imageUrl = '';
             $title = '';
             $desc = '';
         } else {
             $dbError = "Something went wrong. Please try again later.";
-            $responseHandler->errorResponse("Error posting data", $dbError, 500);
+            echo  json_encode($responseHandler->errorResponse("Error posting data", $dbError, 500));
         }
 
         $stmt->close();
     } else {
-        header('Content-Type: application/json');
-
-        echo $responseHandler->errorResponse("Validation errors", $addErrors, 400);
+        echo json_encode($responseHandler->errorResponse("Validation errors", $addErrors, 400));
     }
 }
