@@ -106,7 +106,6 @@ document.querySelector('table').addEventListener('click', function(event) {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Call the delete function if confirmed
                 deleteData(id);
             }
         });
@@ -161,7 +160,7 @@ function update_data(data) {
             action: action,
         },
         success: function(response) {
-            alert(response.message);
+            toastr.success(response.message)
             fetchData();
             modalViewer("editModal", false)
         },

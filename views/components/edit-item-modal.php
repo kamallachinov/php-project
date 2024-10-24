@@ -45,12 +45,7 @@ require "../db/db-connection.php";
 
 <script src="../utils/modal-viewer/modal-viewer.js"></script>
 <script>
-// document.getElementById('openModal')?.addEventListener('click', () => {
-//     console.log("clciked")
-//     modalViewer('editModal', true)
-// });
 document.getElementById('closeEditModal')?.addEventListener('click', () => {
-    console.log("clciked close")
     modalViewer('editModal', false)
 });
 </script>

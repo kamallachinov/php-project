@@ -1,6 +1,5 @@
 <?php
 require "../controllers/add-table-data.php";
-// require "../utils/modal-viewer/modal-viewer.js";
 $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);
 ?>
 
@@ -10,9 +9,9 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-lg font-bold mb-4">Add New Item</h2>
 
-        <!-- <?php if (!empty($dbError)): ?>
+        <?php if (!empty($dbError)): ?>
         <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
-        <?php endif; ?> -->
+        <?php endif; ?>
         <form method="POST" action="">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
@@ -102,7 +101,6 @@ function postData(data) {
             if (response.error) {
                 alert(response.error);
             }
-            // alert(response.error + ": " + JSON.stringify(response.errorData));
             modalViewer("modal", true)
         }
     })
