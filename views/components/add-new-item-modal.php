@@ -4,14 +4,15 @@ require "../controllers/add-table-data.php";
 $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);
 ?>
 
+
 <div id="modal"
     class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center <?= $showModal ? '' : 'hidden'; ?>">
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-lg font-bold mb-4">Add New Item</h2>
 
-        <?php if (!empty($dbError)): ?>
+        <!-- <?php if (!empty($dbError)): ?>
         <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
-        <?php endif; ?>
+        <?php endif; ?> -->
         <form method="POST" action="">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
@@ -40,15 +41,65 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
             <div class="flex justify-end">
                 <button type="button" id="closeModal"
                     class="mr-2 bg-gray-400 px-3 py-2 rounded text-white">Cancel</button>
-                <button type="submit" name="post-data-submit"
-                    class="bg-blue-500 px-3 py-2 rounded text-white">Submit</button>
+                <button type="submit" name="post-data-submit" class="bg-blue-500 px-3 py-2 rounded text-white"
+                    id="add-new-item-btn">Submit</button>
             </div>
         </form>
     </div>
 </div>
 
-<script src="../utils/modal-viewer/modal-viewer.js"></script>
+<script src="../../utils/modal-viewer/modal-viewer.js"></script>
+<!-- jQuery library (required) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
+document.getElementById(("add-new-item-btn")).addEventListener("click", (e) => {
+    const data = {
+        imageUrl: document.getElementById("imageUrl").value,
+        title: document.getElementById("title").value,
+        desc: document.getElementById("description").value
+    }
+    postData(data);
+    // if (data.imageUrl === "" || data.title === "" || data.desc === "") {
+    //     alert("All fields are required.");
+    // } else {
+    //     postData(data);
+    // }
+})
+
+function postData(data) {
+    $.ajax({
+        url: "../controllers/add-table-data.php",
+        type: "POST",
+        data: {
+            imageUrl: data.imageUrl,
+            title: data.title,
+            description: data.desc
+        },
+        success: function(response) {
+            console.log(response, 'response');
+            if (response && typeof response === "string") {
+                response = JSON.parse(response);
+            }
+
+            if (response.message) {
+                alert(response.message);
+            }
+
+            fetchData();
+            modalViewer("modal", false);
+        },
+        error: function(error) {
+            console.error('Error deleting record:', error);
+            alert(response.error + ": " + JSON.stringify(response.errorData));
+            modalViewer("modal", true)
+        }
+    })
+}
+
+
 document.getElementById('openModal')?.addEventListener('click', () => modalViewer('modal', true));
 document.getElementById('closeModal')?.addEventListener('click', () => modalViewer('modal', false));
 </script>

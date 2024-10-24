@@ -1,5 +1,7 @@
 <?php
 require "../db/db-connection.php";
+require "../utils/response-handler/response-handler.php";
+$responseHandler = new ResponseHandler();
 
 $imageUrl = '';
 $title = '';
@@ -12,34 +14,37 @@ $addErrors = [
 ];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['post-data-submit'])) {
-    $imageUrl = $_POST['imageUrl'] ?? '';
-    $title = $_POST['title'] ?? '';
-    $desc = $_POST['description'] ?? '';
 
-    if (empty($imageUrl)) {
-        $addErrors['imageUrl'] = "Image URL is required";
-    }
-    if (empty($title)) {
-        $addErrors['title'] = "Title is required";
-    }
-    if (empty($desc)) {
-        $addErrors['desc'] = "Description is required";
-    }
+    $imageUrl = isset($_POST['imageUrl']) ? trim(htmlspecialchars($_POST['imageUrl'])) : '';
+    $title = isset($_POST['title']) ? trim(htmlspecialchars($_POST['title'])) : '';
+    $desc = isset($_POST['description']) ? trim(htmlspecialchars($_POST['description'])) : '';
+
+    $addErrors['imageUrl'] = empty($imageUrl) ? "Image URL field cannot be empty!" : '';
+    $addErrors['title'] = empty($title) ? "Title field cannot be empty!" : '';
+    $addErrors['desc'] = empty($desc) ? "Description field cannot be empty!" : '';
 
     if (empty($addErrors['imageUrl']) && empty($addErrors['title']) && empty($addErrors['desc'])) {
         $stmt = $conn->prepare("INSERT INTO dashboard_data (imageUrl, title, description) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $imageUrl, $title, $desc);
 
         if ($stmt->execute()) {
+            $response = $responseHandler->successResponse("Posted successfully", [
+                'imageUrl' => $imageUrl,
+                'title' => $title,
+                'description' => $desc
+            ]);
             $imageUrl = '';
             $title = '';
             $desc = '';
         } else {
             $dbError = "Something went wrong. Please try again later.";
+            $responseHandler->errorResponse("Error posting data", $dbError, 500);
         }
 
         $stmt->close();
+    } else {
+        header('Content-Type: application/json');
+
+        echo $responseHandler->errorResponse("Validation errors", $addErrors, 400);
     }
 }
-
-?>
