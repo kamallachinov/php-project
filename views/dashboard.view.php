@@ -11,7 +11,7 @@ require "../../php-prj/db/db-connection.php";
         <div class="container mx-auto px-4">
             <button id="openModal" class="bg-green-400 px-2 py-2 rounded text-slate-50 mb-2">Add new item</button>
 
-            <!-- modal component -->
+            <!-- Add New Item Modal component -->
             <?php include './components/add-new-item-modal.php'; ?>
 
             <div class="overflow-y-auto overflow-x-hidden max-h-[400px]">
@@ -36,11 +36,9 @@ require "../../php-prj/db/db-connection.php";
     <?php include './components/edit-item-modal.php'; ?>
 </main>
 
-<!-- jQuery library (required) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="../../php-prj/utils/modal-viewer/modal-viewer.js"></script>
+<!--Footer Component -->
+<?php require "partials/footer.php" ?>
+
 <script>
 const editModalWrapper = document.getElementById('editModal');
 const imageUrlFieldEditModal = document.getElementById('ImageUrlEditModal');
@@ -94,6 +92,26 @@ document.querySelector('table').addEventListener('click', function(event) {
 
         modalViewer('editModal', true);
     }
+
+
+    if (event.target.classList.contains('delete-btn')) {
+        const id = event.target.getAttribute('data-id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Think twice before deletion",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Call the delete function if confirmed
+                deleteData(id);
+            }
+        });
+
+    }
 });
 
 document.getElementById("submit-edit-btn").addEventListener("click", function(e) {
@@ -122,7 +140,6 @@ function deleteData(id) {
             id: id
         },
         success: function(data) {
-            alert(data);
             fetchData();
         },
         error: function(error) {
@@ -156,5 +173,3 @@ function update_data(data) {
     });
 }
 </script>
-
-<?php require "partials/footer.php" ?>
