@@ -1,5 +1,7 @@
 <?php
 require "../db/db-connection.php";
+require "../utils/response-handler/response-handler.php";
+$responseHandler = new ResponseHandler();
 
 $imageUrl = '';
 $title = '';
@@ -10,7 +12,6 @@ $editErrors = [
     'title' => '',
     'desc' => ''
 ];
-$response = ['message' => '', 'errors' => $editErrors];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction") {
 
@@ -23,31 +24,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
     $editErrors['desc'] = empty($desc) ? "Description field cannot be empty!" : '';
 
     if (empty($editErrors['imageUrl']) && empty($editErrors['title']) && empty($editErrors['desc'])) {
-        $id = $_POST['id']; 
+        $id = $_POST['id'];
         $sql = "UPDATE `dashboard_data` SET `imageUrl` = ?, `Title` = ?, `Description` = ? WHERE `id` = ?";
 
         if ($stmt = $conn->prepare($sql)) {
-            // Bind parameters
             $stmt->bind_param("sssi", $imageUrl, $title, $desc, $id);
 
             if ($stmt->execute()) {
-                $response['message'] = "Record was successfully updated!";
+                echo $responseHandler->SUCCESS_RESPONSE("Record was successfully updated!", [
+                    'imageUrl' => $imageUrl,
+                    'title' => $title,
+                    'description' => $desc
+                ]);
             } else {
-                $response['message'] = "Error updating record: " . $stmt->error;
+                echo $responseHandler->ERROR_RESPONSE("Error updating record.", $stmt->error);
             }
 
             $stmt->close();
         } else {
-            $response['message'] = "Error preparing update statement: " . $conn->error;
+            echo $responseHandler->ERROR_RESPONSE("Error preparing update statement.", $conn->error);
         }
     } else {
-        $response['errors'] = $editErrors;
-        $response['message'] = "Validation errors occurred.";
+        echo $responseHandler->ERROR_RESPONSE("Validation errors occurred.", $editErrors);
     }
-    
-    header('Content-Type: application/json');
-    echo json_encode($response); 
 } else {
-    // header('Content-Type: application/json'); 
-    echo json_encode(['message' => 'Invalid request method.']); 
+    echo ("Invalid request method or action.");
 }

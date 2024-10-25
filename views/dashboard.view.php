@@ -165,9 +165,8 @@ function update_data(data) {
             modalViewer("editModal", false)
         },
         error: function(error) {
-            console.error('Error updating record:', error);
-            alert("An error occurred while updating the record. Please try again.");
-            modalViewer("editModal", false)
+            toastr.error(error.responseJSON.error);
+            modalViewer("editModal", true)
         }
     });
 }
