@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($stmt->execute()) {
             header('Content-Type: application/json');
 
-            echo  json_encode($response = $responseHandler->successResponse("Posted successfully", [
+            echo  json_encode($response = $responseHandler->SUCCESS_RESPONSE("Posted successfully", [
                 'imageUrl' => $imageUrl,
                 'title' => $title,
                 'description' => $desc
@@ -39,11 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $desc = '';
         } else {
             $dbError = "Something went wrong. Please try again later.";
-            echo  json_encode($responseHandler->errorResponse("Error posting data", $dbError, 500));
+            echo  json_encode($responseHandler->ERROR_RESPONSE("Error posting data", $dbError, 500));
         }
 
         $stmt->close();
     } else {
-        echo json_encode($responseHandler->errorResponse("Validation errors", $addErrors, 400));
+        echo json_encode($responseHandler->ERROR_RESPONSE("Validation errors", $addErrors, 400));
     }
 }

@@ -10,7 +10,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
         <h2 class="text-lg font-bold mb-4">Add New Item</h2>
 
         <?php if (!empty($dbError)): ?>
-        <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
+            <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
         <?php endif; ?>
         <form method="POST" action="">
             <div class="mb-4">
@@ -18,7 +18,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
                 <input type="text" id="imageUrl" name="imageUrl" value="<?= htmlspecialchars($imageUrl) ?>"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
                 <?php if (!empty($addErrors['imageUrl'])): ?>
-                <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['imageUrl']) ?></p>
+                    <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['imageUrl']) ?></p>
                 <?php endif; ?>
             </div>
             <div class="mb-4">
@@ -26,7 +26,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
                 <input type="text" id="title" name="title" value="<?= htmlspecialchars($title) ?>"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
                 <?php if (!empty($addErrors['title'])): ?>
-                <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['title']) ?></p>
+                    <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['title']) ?></p>
                 <?php endif; ?>
             </div>
             <div class="mb-4">
@@ -34,7 +34,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
                 <textarea id="description" name="description" rows="3"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"><?= htmlspecialchars($desc) ?></textarea>
                 <?php if (!empty($addErrors['desc'])): ?>
-                <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['desc']) ?></p>
+                    <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['desc']) ?></p>
                 <?php endif; ?>
             </div>
             <div class="flex justify-end">
@@ -58,55 +58,57 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
 <script src="../../utils/modal-viewer/modal-viewer.js"></script>
 
 <script>
-document.getElementById(("add-new-item-btn")).addEventListener("click", (e) => {
-    e.preventDefault();
-    const data = {
-        imageUrl: document.getElementById("imageUrl").value,
-        title: document.getElementById("title").value,
-        desc: document.getElementById("description").value
-    };
+    document.getElementById(("add-new-item-btn")).addEventListener("click", (e) => {
+        e.preventDefault();
+        const data = {
+            imageUrl: document.getElementById("imageUrl").value,
+            title: document.getElementById("title").value,
+            desc: document.getElementById("description").value
+        };
 
-    if (!data.imageUrl || !data.title || !data.desc) {
-        alert("All fields are required.");
-        return;
+        if (!data.imageUrl || !data.title || !data.desc) {
+            toastr.error("All fields are required.")
+
+            // alert("All fields are required.");
+            return;
+        }
+
+        postData(data);
+    })
+
+    function postData(data) {
+        $.ajax({
+            url: "../controllers/add-table-data.php",
+            type: "POST",
+            data: {
+                imageUrl: data.imageUrl,
+                title: data.title,
+                description: data.desc
+            },
+            success: function(response) {
+                if (typeof response === "string") {
+                    response = JSON.parse(response);
+                    console.log(response, 'response');
+                }
+
+                if (response.message) {
+                    toastr.success(response.message)
+                }
+
+                fetchData();
+                modalViewer("modal", false);
+            },
+            error: function(error) {
+                console.error('Error deleting record:', error);
+                if (response.error) {
+                    alert(response.error);
+                }
+                modalViewer("modal", true)
+            }
+        })
     }
 
-    postData(data);
-})
 
-function postData(data) {
-    $.ajax({
-        url: "../controllers/add-table-data.php",
-        type: "POST",
-        data: {
-            imageUrl: data.imageUrl,
-            title: data.title,
-            description: data.desc
-        },
-        success: function(response) {
-            if (typeof response === "string") {
-                response = JSON.parse(response);
-                console.log(response, 'response');
-            }
-
-            if (response.message) {
-                toastr.success(response.message)
-            }
-
-            fetchData();
-            modalViewer("modal", false);
-        },
-        error: function(error) {
-            console.error('Error deleting record:', error);
-            if (response.error) {
-                alert(response.error);
-            }
-            modalViewer("modal", true)
-        }
-    })
-}
-
-
-document.getElementById('openModal')?.addEventListener('click', () => modalViewer('modal', true));
-document.getElementById('closeModal')?.addEventListener('click', () => modalViewer('modal', false));
+    document.getElementById('openModal')?.addEventListener('click', () => modalViewer('modal', true));
+    document.getElementById('closeModal')?.addEventListener('click', () => modalViewer('modal', false));
 </script>
