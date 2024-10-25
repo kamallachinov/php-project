@@ -41,7 +41,7 @@ require "../../php-prj/db/db-connection.php";
 
 <script>
     const editModalWrapper = document.getElementById('editModal');
-    const imageUrlFieldEditModal = document.getElementById('ImageUrlEditModal');
+    const imageUrlFieldEditModal = document.getElementById('imageUrlEditModal');
 
     function fetchData() {
         $.ajax({
@@ -86,7 +86,7 @@ require "../../php-prj/db/db-connection.php";
 
             imageUrlFieldEditModal.value = imageUrl;
             document.getElementById('titleEditModal').value = title;
-            document.getElementById('descriptionEditModal').value = description;
+            document.getElementById('descEditModal').value = description;
 
             document.getElementById('submit-edit-btn').setAttribute('data-id', id);
 
@@ -121,7 +121,7 @@ require "../../php-prj/db/db-connection.php";
             id: Number(id),
             imageUrl: imageUrlFieldEditModal.value,
             title: document.getElementById('titleEditModal').value,
-            desc: document.getElementById('descriptionEditModal').value
+            desc: document.getElementById('descEditModal').value
         }
 
         update_data(data);
@@ -149,6 +149,14 @@ require "../../php-prj/db/db-connection.php";
 
     function update_data(data) {
         let action = "updateAction";
+
+        const formData = new FormData();
+        formData.append('id', data.id);
+        formData.append('imageUrl', data.imageUrl);
+        formData.append('title', data.title);
+        formData.append('desc', data.desc);
+        formData.append('action', action);
+
         $.ajax({
             url: "../controllers/update-table-data.php",
             type: "POST",
@@ -162,12 +170,51 @@ require "../../php-prj/db/db-connection.php";
             success: function(response) {
                 toastr.success(response.message);
                 fetchData();
+                clearErrorMessages();
                 modalViewer("editModal", false);
             },
             error: function(error) {
                 toastr.error(error.responseJSON.error);
+                const errors = error.responseJSON.errorData || {};
+
+                for (const key in errors) {
+                    if (errors.hasOwnProperty(key) && errors[key]) {
+                        document.getElementById("submit-edit-btn").setAttribute("disabled", true);
+
+                        const inputField = document.getElementById(key + "EditModal");
+                        if (inputField) {
+                            inputField.classList.add('border-red-500');
+                            inputField.classList.remove("border-gray-300");
+
+                            const errorMessage = document.createElement('p');
+                            errorMessage.className = 'text-red-600 text-sm mt-1';
+                            errorMessage.textContent = errors[key];
+                            inputField.parentNode.insertBefore(errorMessage, inputField.nextSibling);
+
+                            inputField.onchange = function() {
+                                inputField.classList.remove('border-red-500');
+                                inputField.classList.add("border-gray-300");
+
+
+                                if (errorMessage) errorMessage.remove();
+
+                                document.getElementById("submit-edit-btn").removeAttribute("disabled");
+                            };
+                        }
+                    }
+                }
                 modalViewer("editModal", true);
             }
+        });
+    }
+
+    function clearErrorMessages() {
+        const errorMessages = document.querySelectorAll('.text-red-600');
+        errorMessages.forEach(msg => msg.remove());
+
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.classList.remove('border-red-500');
         });
     }
 </script>

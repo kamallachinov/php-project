@@ -1,6 +1,6 @@
 <?php
 include(__DIR__ . "/../../db/db-connection.php");
-$currentPath = basename($_SERVER['REQUEST_URI']); 
+$currentPath = basename($_SERVER['REQUEST_URI']);
 
 $stmt = $conn->prepare("SELECT * FROM `navbar-items`");
 $stmt->execute();
@@ -17,12 +17,12 @@ $result = $stmt->get_result();
             <ul
                 class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 ">
                 <?php while ($row = $result->fetch_assoc()): ?>
-                <li>
-                    <a href="<?= htmlspecialchars($row['path']) ?>"
-                        class="block py-2 px-3 <?= (basename($currentPath) == basename($row['path'])) ? 'text-red-700 underline' : 'text-gray-900' ?> bg-transparent rounded md:p-0">
-                        <?= htmlspecialchars($row['path_name']) ?>
-                    </a>
-                </li>
+                    <li>
+                        <a href="<?= htmlspecialchars($row['path']) ?>"
+                            class="block py-2 px-3 <?= (basename($currentPath) == basename($row['path'])) ? 'text-red-700 underline' : 'text-gray-900' ?> bg-transparent rounded md:p-0">
+                            <?= htmlspecialchars($row['path_name']) ?>
+                        </a>
+                    </li>
                 <?php endwhile; ?>
                 <li>
                     <form action="" method="POST">
@@ -41,23 +41,22 @@ $result = $stmt->get_result();
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-document.getElementById("logoutBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    logout();
-})
-
-
-function logout() {
-    $.ajax({
-        url: "../../php-prj/controllers/auth/logout.php",
-        type: "POST",
-        success: function() {
-            console.log("User logged out sucessfully!");
-            window.location.href = "/php-prj/views/auth/login.view.php";
-        },
-        error: function() {
-            console.error("Error occured!")
-        }
+    document.getElementById("logoutBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        logout();
     })
-}
+
+
+    function logout() {
+        $.ajax({
+            url: "../../php-prj/controllers/auth/logout.php",
+            type: "POST",
+            success: function() {
+                window.location.href = "/php-prj/views/auth/login.view.php";
+            },
+            error: function() {
+                console.error("Error occured!")
+            }
+        })
+    }
 </script>

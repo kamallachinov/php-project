@@ -10,7 +10,6 @@ $editErrors = [
     'desc' => ''
 ];
 
-
 $id = $_POST['id'];
 $newImageUrl = $_POST['imageUrl'];
 $newTitle = $_POST['title'];
@@ -19,9 +18,9 @@ $postAction = $_POST['action'];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction") {
 
-    $editErrors['imageUrl'] = empty($newImageUrl) ? "Image URL field cannot be empty!" : '';
-    $editErrors['title'] = empty($newTitle) ? "Title field cannot be empty!" : '';
-    $editErrors['desc'] = empty($newDesc) ? "Description field cannot be empty!" : '';
+    $editErrors['imageUrl'] = empty($newImageUrl) ? "Image URL field cannot be empty!" : null;
+    $editErrors['title'] = empty($newTitle) ? "Title field cannot be empty!" : null;
+    $editErrors['desc'] = empty($newDesc) ? "Description field cannot be empty!" : null;
 
     $sql_query = "SELECT * FROM `dashboard_data` WHERE `id` = ? ";
     $stmt = $conn->prepare($sql_query);
