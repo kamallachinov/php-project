@@ -58,12 +58,18 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
 <script src="../../utils/modal-viewer/modal-viewer.js"></script>
 
 <script>
-document.getElementById(("add-new-item-btn")).addEventListener("click", (e) => {
+const addItemBtn = document.getElementById("add-new-item-btn");
+const imageUrlInput = document.getElementById("imageUrlPostModal");
+const titleInput = document.getElementById("titlePostModal");
+const descInput = document.getElementById("descPostModal");
+
+
+addItemBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const data = {
-        imageUrl: document.getElementById("imageUrlPostModal").value,
-        title: document.getElementById("titlePostModal").value,
-        desc: document.getElementById("descPostModal").value
+        imageUrl: imageUrlInput.value,
+        title: titleInput.value,
+        desc: descInput.value
     };
 
     // if (!data.imageUrl || !data.title || !data.desc) {
@@ -76,14 +82,6 @@ document.getElementById(("add-new-item-btn")).addEventListener("click", (e) => {
 
 function postData(data) {
     let action = "postAction";
-    console.log(data)
-
-    // const formData = new FormData();
-    // formData.append('id', data.id);
-    // formData.append('imageUrl', data.imageUrl);
-    // formData.append('title', data.title);
-    // formData.append('desc', data.desc);
-    // formData.append('action', action);
 
     $.ajax({
         url: "../controllers/add-table-data.php",
@@ -98,10 +96,7 @@ function postData(data) {
             if (typeof response === "string") {
                 response = JSON.parse(response);
             }
-            document.getElementById('imageUrlPostModal').value = '';
-            document.getElementById('titlePostModal').value = '';
-            document.getElementById('descPostModal').value = '';
-
+            clearForm();
             if (response.message) {
                 toastr.success(response.message)
             }
@@ -111,34 +106,45 @@ function postData(data) {
         },
         error: function(error) {
             const errors = error.responseJSON.errorData || {};
-            for (const key in errors) {
-                if (errors.hasOwnProperty(key) && errors[key]) {
-                    document.getElementById("add-new-item-btn").setAttribute("disabled", true);
-                    const inputField = document.getElementById(key + "PostModal");
-                    if (inputField) {
-                        inputField.classList.add('border-red-500');
-                        inputField.classList.remove("border-gray-300");
-                        inputField.classList.remove("border");
-
-                        const errorMessage = document.createElement('p');
-                        errorMessage.className = 'text-red-600 text-sm mt-1';
-                        errorMessage.textContent = errors[key];
-                        inputField.parentNode.insertBefore(errorMessage, inputField.nextSibling);
-
-                        inputField.onchange = function() {
-                            inputField.classList.remove('border-red-500');
-                            inputField.classList.add("border-gray-300");
-
-                            if (errorMessage) errorMessage.remove();
-
-                            document.getElementById("add-new-item-btn").removeAttribute("disabled");
-                        };
-                    }
-                }
-            }
+            errorHandler(errors);
             modalViewer("modal", true)
         }
     })
+}
+
+function clearForm() {
+    imageUrlInput.value = '';
+    titleInput.value = '';
+    descInput.value = '';
+
+}
+
+function errorHandler(errors) {
+    for (const key in errors) {
+        if (errors.hasOwnProperty(key) && errors[key]) {
+            document.getElementById("add-new-item-btn").setAttribute("disabled", true);
+            const inputField = document.getElementById(key + "PostModal");
+            if (inputField) {
+                inputField.classList.add('border-red-500');
+                inputField.classList.remove("border-gray-300");
+                inputField.classList.remove("border");
+
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'text-red-600 text-sm mt-1';
+                errorMessage.textContent = errors[key];
+                inputField.parentNode.insertBefore(errorMessage, inputField.nextSibling);
+
+                inputField.onchange = function() {
+                    inputField.classList.remove('border-red-500');
+                    inputField.classList.add("border-gray-300");
+
+                    if (errorMessage) errorMessage.remove();
+
+                    document.getElementById("add-new-item-btn").removeAttribute("disabled");
+                };
+            }
+        }
+    }
 }
 
 function clearErrorMessages() {
@@ -150,6 +156,7 @@ function clearErrorMessages() {
         input.classList.remove('border-red-500');
     });
 }
+
 document.getElementById('openModal')?.addEventListener('click', () => modalViewer('modal', true));
 document.getElementById('closeModal')?.addEventListener('click', () => modalViewer('modal', false));
 </script>
