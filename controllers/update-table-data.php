@@ -1,5 +1,4 @@
 <?php
-session_start();
 require "../db/db-connection.php";
 require "../utils/response-handler/response-handler.php";
 $responseHandler = new ResponseHandler();
@@ -56,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
                     echo $responseHandler->ERROR_RESPONSE("An error occurred while updating the record.");
                 }
             } else {
-                $_SESSION['editValidationErrors'] = $editErrors;
                 echo $responseHandler->ERROR_RESPONSE("Validation errors occurred.", $editErrors);
             }
         }
