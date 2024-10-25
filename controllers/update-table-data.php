@@ -3,10 +3,6 @@ require "../db/db-connection.php";
 require "../utils/response-handler/response-handler.php";
 $responseHandler = new ResponseHandler();
 
-$imageUrl = '';
-$title = '';
-$desc = '';
-
 $editErrors = [
     'imageUrl' => '',
     'title' => '',

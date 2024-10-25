@@ -14,7 +14,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
         <form method="POST" action="">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
-                <input type="text" id="imageUrl" name="imageUrl" value="<?= htmlspecialchars($imageUrl) ?>"
+                <input type="text" id="imageUrl" name="imageUrl"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
                 <?php if (!empty($addErrors['imageUrl'])): ?>
                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['imageUrl']) ?></p>
@@ -22,7 +22,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
             </div>
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="title" name="title" value="<?= htmlspecialchars($title) ?>"
+                <input type="text" id="title" name="title"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
                 <?php if (!empty($addErrors['title'])): ?>
                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['title']) ?></p>
@@ -31,7 +31,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea id="description" name="description" rows="3"
-                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"><?= htmlspecialchars($desc) ?></textarea>
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
                 <?php if (!empty($addErrors['desc'])): ?>
                 <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['desc']) ?></p>
                 <?php endif; ?>
