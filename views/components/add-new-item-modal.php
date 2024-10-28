@@ -3,38 +3,32 @@ require "../controllers/add-table-data.php";
 $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);
 ?>
 
-<div id="modal"
+<div id="postNewItemModal"
     class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center <?= $showModal ? '' : 'hidden'; ?>">
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-lg font-bold mb-4">Add New Item</h2>
 
         <?php if (!empty($dbError)): ?>
-            <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
+        <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
         <?php endif; ?>
         <form method="POST" action="">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
-                <input type="text" id="imageUrlPostModal" name="imageUrl"
+                <input type="text" id="imageUrlPostModal" name="imageUrlFieldPostModal"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
-                <?php if (!empty($addErrors['imageUrl'])): ?>
-                    <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['imageUrl']) ?></p>
-                <?php endif; ?>
+
             </div>
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                <input type="text" id="titlePostModal" name="title"
+                <input type="text" id="titlePostModal" name="titleFieldPostModal"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
-                <?php if (!empty($addErrors['title'])): ?>
-                    <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['title']) ?></p>
-                <?php endif; ?>
+
             </div>
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea id="descPostModal" name="description" rows="3"
+                <textarea id="descPostModal" name="descriptionFieldPostModal" rows="3"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
-                <?php if (!empty($addErrors['desc'])): ?>
-                    <p class="text-red-600 text-sm mt-1"><?= htmlspecialchars($addErrors['desc']) ?></p>
-                <?php endif; ?>
+
             </div>
             <div class="flex justify-end">
                 <button type="button" id="closeModal"
@@ -55,112 +49,81 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <!-- Modal Viewer -->
-<script src="../../utils/modal-viewer/modal-viewer.js"></script>
+<script src="../../php-prj/utils/modal-viewer/modal-viewer.js"></script>
+
+<!--Form error handler -->
+<script src="../../php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <script>
-    const addItemBtn = document.getElementById("add-new-item-btn");
-    const imageUrlInput = document.getElementById("imageUrlPostModal");
-    const titleInput = document.getElementById("titlePostModal");
-    const descInput = document.getElementById("descPostModal");
+const addItemBtn = document.getElementById("add-new-item-btn");
+const imageUrlInput = document.getElementById("imageUrlPostModal");
+const titleInput = document.getElementById("titlePostModal");
+const descInput = document.getElementById("descPostModal");
 
 
-    addItemBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const data = {
-            imageUrl: imageUrlInput.value,
-            title: titleInput.value,
-            desc: descInput.value
-        };
+addItemBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const data = {
+        imageUrl: imageUrlInput.value ?? "",
+        title: titleInput.value ?? "",
+        desc: descInput.value ?? ""
+    };
 
-        // if (!data.imageUrl || !data.title || !data.desc) {
-        //     toastr.error("All fields are required.")
-        //     return;
-        // }
+    // if (!data.imageUrl || !data.title || !data.desc) {
+    //     toastr.error("All fields are required.")
+    //     return;
+    // }
 
-        postData(data);
-    })
+    postData(data);
+})
 
-    function postData(data) {
-        let action = "postAction";
+function postData(data) {
+    let action = "postAction";
 
-        $.ajax({
-            url: "../controllers/add-table-data.php",
-            type: "POST",
-            data: {
-                action: action,
-                imageUrl: data.imageUrl,
-                title: data.title,
-                description: data.desc
-            },
-            success: function(response) {
-                if (typeof response === "string") {
-                    response = JSON.parse(response);
-                }
-                clearForm();
-                if (response.message) {
-                    toastr.success(response.message)
-                }
+    $.ajax({
+        url: "../controllers/add-table-data.php",
+        type: "POST",
+        data: {
+            action: action,
+            imageUrlFieldPostModal: data.imageUrl,
+            titleFieldPostModal: data.title,
+            descriptionFieldPostModal: data.desc
+        },
+        success: function(response) {
+            if (typeof response === "string") {
+                response = JSON.parse(response);
+            }
+            clearForm();
+            if (response.message) {
+                toastr.success(response.message)
+            }
 
-                fetchData();
-                modalViewer("modal", false);
-            },
-            error: function(error) {
+            fetchData();
+            modalViewer("postNewItemModal", false);
+        },
+        error: function(error) {
+            if (error.responseJSON) {
+                toastr.error(error.responseJSON.error);
                 const errors = error.responseJSON.errorData || {};
-                errorHandler(errors);
-                modalViewer("modal", true)
+                formErrorHandler(errors, "add-new-item-btn", "PostModal");
+            } else {
+                toastr.error("An unexpected error occurred.");
             }
-        })
-    }
-
-    function clearForm() {
-        imageUrlInput.value = '';
-        titleInput.value = '';
-        descInput.value = '';
-
-    }
-
-    function errorHandler(errors) {
-        for (const key in errors) {
-            if (errors.hasOwnProperty(key) && errors[key]) {
-                document.getElementById("add-new-item-btn").setAttribute("disabled", true);
-                const inputField = document.getElementById(key + "PostModal");
-                if (inputField) {
-                    inputField.classList.add('border-red-500');
-                    inputField.classList.remove("border-gray-300");
-                    inputField.classList.remove("border");
-
-                    const errorMessage = document.createElement('p');
-                    errorMessage.className = 'text-red-600 text-sm mt-1';
-                    errorMessage.textContent = errors[key];
-                    inputField.parentNode.insertBefore(errorMessage, inputField.nextSibling);
-
-                    inputField.onchange = function() {
-                        inputField.classList.remove('border-red-500');
-                        inputField.classList.add("border-gray-300");
-
-                        if (errorMessage) errorMessage.remove();
-
-                        document.getElementById("add-new-item-btn").removeAttribute("disabled");
-                    };
-                }
-            }
+            modalViewer("postNewItemModal", true);
         }
-    }
+    })
+}
 
-    function clearErrorMessages() {
-        const errorMessages = document.querySelectorAll('.text-red-600');
-        errorMessages.forEach(msg => msg.remove());
+function clearForm() {
+    imageUrlInput.value = '';
+    titleInput.value = '';
+    descInput.value = '';
+}
 
-        const inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.classList.remove('border-red-500');
-        });
-    }
-
-    document.getElementById('openModal')?.addEventListener('click', () => modalViewer('modal', true));
-    document.getElementById('closeModal')?.addEventListener('click', () => {
-        modalViewer('modal', false);
-        // console.log(("closed"))
-        // clearErrorMessages();
-    });
+document.getElementById('openModal')?.addEventListener('click', () => modalViewer('postNewItemModal', true));
+document.getElementById('closeModal')?.addEventListener('click', () => {
+    modalViewer('postNewItemModal', false);
+    clearForm();
+    clearErrorMessages();
+});
 </script>

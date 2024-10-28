@@ -15,6 +15,10 @@
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- GLOBAL CSS -->
+    <link rel="stylesheet" href="../../assets/styles/global.css">
+
+
     <title><?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) : 'Document'; ?></title>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 </head>

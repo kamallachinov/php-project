@@ -7,23 +7,23 @@ require "../db/db-connection.php";
         <h2 class="text-lg font-bold mb-4">Edit item</h2>
 
         <?php if (!empty($dbError)): ?>
-            <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
+        <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
         <?php endif; ?>
         <form method="POST">
             <div class="mb-4">
                 <label for="imageUrl" class="block text-sm font-medium text-gray-700">Image URL</label>
                 <input type="text" id="imageUrlEditModal" name="imageUrl"
-                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" />
+                    class="mt-1 block w-full border  rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
             <div class="mb-4">
                 <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
                 <input type="text" id="titleEditModal" name="title" value="<?= htmlspecialchars($title) ?>"
-                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
+                    class="mt-1 block w-full border  rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea id="descEditModal" name="desc" rows="3"
-                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"><?= htmlspecialchars($desc) ?></textarea>
+                    class="mt-1 block w-full border  rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"><?= htmlspecialchars($desc) ?></textarea>
             </div>
             <div class="flex justify-end">
                 <button type="button" id="closeEditModal"
@@ -35,9 +35,15 @@ require "../db/db-connection.php";
     </div>
 </div>
 
+<!-- Modal Viewer -->
 <script src="../utils/modal-viewer/modal-viewer.js"></script>
+
+<!--Form error handler -->
+<script src="../../php-prj/utils/form-error-handler/form-error-handler.js"></script>
+
 <script>
-    document.getElementById('closeEditModal')?.addEventListener('click', () => {
-        modalViewer('editModal', false)
-    });
+document.getElementById('closeEditModal')?.addEventListener('click', () => {
+    modalViewer('editModal', false);
+    clearErrorMessages();
+});
 </script>

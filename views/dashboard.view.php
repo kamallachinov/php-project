@@ -39,6 +39,10 @@ require "../../php-prj/db/db-connection.php";
 <!--Footer Component -->
 <?php require "partials/footer.php" ?>
 
+
+<!-- Modal Viewer -->
+<script src="../../php-prj/utils/modal-viewer/modal-viewer.js"></script>
+
 <script>
     const editModalWrapper = document.getElementById('editModal');
     const imageUrlFieldEditModal = document.getElementById('imageUrlEditModal');
@@ -127,8 +131,6 @@ require "../../php-prj/db/db-connection.php";
         update_data(data);
     });
 
-
-
     function deleteData(id) {
         let action = "dltRecord";
         $.ajax({
@@ -169,52 +171,15 @@ require "../../php-prj/db/db-connection.php";
                 modalViewer("editModal", false);
             },
             error: function(error) {
-                toastr.error(error.responseJSON.error);
-                const errors = error.responseJSON.errorData || {};
-                errorHandler(errors);
-
+                if (error.responseJSON) {
+                    toastr.error(error.responseJSON.error);
+                    const errors = error.responseJSON.errorData || {};
+                    formErrorHandler(errors, "submit-edit-btn", "EditModal")
+                } else {
+                    toastr.error("An unexpected error occurred.");
+                }
                 modalViewer("editModal", true);
             }
-        });
-    }
-
-    function errorHandler(errors) {
-        for (const key in errors) {
-            if (errors.hasOwnProperty(key) && errors[key]) {
-                document.getElementById("submit-edit-btn").setAttribute("disabled", true);
-
-                const inputField = document.getElementById(key + "EditModal");
-                if (inputField) {
-                    inputField.classList.add('border-red-500');
-                    inputField.classList.remove("border-gray-300");
-                    inputField.classList.remove("border");
-
-                    const errorMessage = document.createElement('p');
-                    errorMessage.className = 'text-red-600 text-sm mt-1';
-                    errorMessage.textContent = errors[key];
-                    inputField.parentNode.insertBefore(errorMessage, inputField.nextSibling);
-
-                    inputField.onchange = function() {
-                        inputField.classList.remove('border-red-500');
-                        inputField.classList.add("border-gray-300");
-
-
-                        if (errorMessage) errorMessage.remove();
-
-                        document.getElementById("submit-edit-btn").removeAttribute("disabled");
-                    };
-                }
-            }
-        }
-    }
-
-    function clearErrorMessages() {
-        const errorMessages = document.querySelectorAll('.text-red-600');
-        errorMessages.forEach(msg => msg.remove());
-
-        const inputs = document.querySelectorAll('input, textarea');
-        inputs.forEach(input => {
-            input.classList.remove('border-red-500');
         });
     }
 </script>

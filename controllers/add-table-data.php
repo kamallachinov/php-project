@@ -10,10 +10,9 @@ $addErrors = [
 ];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "postAction") {
-
-    $imageUrl = isset($_POST['imageUrl']) ? trim(htmlspecialchars($_POST['imageUrl'])) : '';
-    $title = isset($_POST['title']) ? trim(htmlspecialchars($_POST['title'])) : '';
-    $desc = isset($_POST['description']) ? trim(htmlspecialchars($_POST['description'])) : '';
+    $imageUrl = isset($_POST['imageUrlFieldPostModal']) ? trim(htmlspecialchars($_POST['imageUrlFieldPostModal'])) : '';
+    $title = isset($_POST['titleFieldPostModal']) ? trim(htmlspecialchars($_POST['titleFieldPostModal'])) : '';
+    $desc = isset($_POST['descriptionFieldPostModal']) ? trim(htmlspecialchars($_POST['descriptionFieldPostModal'])) : '';
 
     $addErrors['imageUrl'] = empty($imageUrl) ? "Image URL field cannot be empty!" : '';
     $addErrors['title'] = empty($title) ? "Title field cannot be empty!" : '';
