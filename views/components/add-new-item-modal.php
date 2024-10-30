@@ -54,76 +54,53 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
 <!--Form error handler -->
 <script src="../../php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
+<!--Form submission -->
+<script src="../../php-prj/utils/generic-ajax-submission/submit-form.js"></script>
+
 <script>
 const addItemBtn = document.getElementById("add-new-item-btn");
 const imageUrlInput = document.getElementById("imageUrlPostModal");
 const titleInput = document.getElementById("titlePostModal");
 const descInput = document.getElementById("descPostModal");
 
+const postNewItemFields = [{
+        id: "imageUrlPostModal",
+        label: "Image URL"
+    },
+    {
+        id: "titlePostModal",
+        label: "Title"
+    },
+    {
+        id: "descPostModal",
+        label: "Description"
+    }
+];
 
 addItemBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const data = {
-        imageUrl: imageUrlInput.value ?? "",
-        title: titleInput.value ?? "",
-        desc: descInput.value ?? ""
-    };
+    const isValid = validateFormFields(postNewItemFields);
 
-    // if (!data.imageUrl || !data.title || !data.desc) {
-    //     toastr.error("All fields are required.")
-    //     return;
-    // }
-
-    postData(data);
-})
-
-function postData(data) {
-    let action = "postAction";
-
-    $.ajax({
-        url: "../controllers/add-table-data.php",
-        type: "POST",
-        data: {
-            action: action,
-            imageUrlFieldPostModal: data.imageUrl,
-            titleFieldPostModal: data.title,
-            descriptionFieldPostModal: data.desc
-        },
-        success: function(response) {
-            if (typeof response === "string") {
-                response = JSON.parse(response);
-            }
-            clearForm();
-            if (response.message) {
-                toastr.success(response.message)
-            }
-
-            fetchData();
+    if (isValid) {
+        const data = {
+            action: "postAction",
+            imageUrlFieldPostModal: document.getElementById("imageUrlPostModal").value.trim(),
+            titleFieldPostModal: document.getElementById("titlePostModal").value.trim(),
+            descriptionFieldPostModal: document.getElementById("descPostModal").value.trim()
+        };
+        submitForm(data, "../../php-prj/controllers/add-table-data.php", () => {
+            resetForm(postNewItemFields);
             modalViewer("postNewItemModal", false);
-        },
-        error: function(error) {
-            if (error.responseJSON) {
-                toastr.error(error.responseJSON.error);
-                const errors = error.responseJSON.errorData || {};
-                formErrorHandler(errors, "add-new-item-btn", "PostModal");
-            } else {
-                toastr.error("An unexpected error occurred.");
-            }
-            modalViewer("postNewItemModal", true);
-        }
-    })
-}
-
-function clearForm() {
-    imageUrlInput.value = '';
-    titleInput.value = '';
-    descInput.value = '';
-}
+            fetchData();
+        });
+    } else {
+        toastr.error("Please fill in all fields.");
+    }
+})
 
 document.getElementById('openModal')?.addEventListener('click', () => modalViewer('postNewItemModal', true));
 document.getElementById('closeModal')?.addEventListener('click', () => {
     modalViewer('postNewItemModal', false);
-    clearForm();
-    clearErrorMessages();
+    resetForm();
 });
 </script>

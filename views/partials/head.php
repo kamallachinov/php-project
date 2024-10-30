@@ -16,7 +16,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- GLOBAL CSS -->
-    <link rel="stylesheet" href="../../assets/styles/global.css">
+    <link rel="stylesheet" href="../../php-prj/assets/styles/global.css">
 
 
     <title><?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) : 'Document'; ?></title>
