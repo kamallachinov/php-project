@@ -14,15 +14,14 @@ $result = $stmt->get_result();
             <span class="self-center text-2xl font-semibold whitespace-nowrap text-gray-900">Flowbite</span>
         </a>
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul
-                class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 ">
+            <ul class="font-medium flex flex-col p-4 md:p-0 mt-4    md:flex-row md:space-x-8  ">
                 <?php while ($row = $result->fetch_assoc()): ?>
-                    <li>
-                        <a href="<?= htmlspecialchars($row['path']) ?>"
-                            class="block py-2 px-3 <?= (basename($currentPath) == basename($row['path'])) ? 'text-red-700 underline' : 'text-gray-900' ?> bg-transparent rounded md:p-0">
-                            <?= htmlspecialchars($row['path_name']) ?>
-                        </a>
-                    </li>
+                <li>
+                    <a href="<?= htmlspecialchars($row['path']) ?>"
+                        class="block py-2 px-3 <?= (basename($currentPath) == basename($row['path'])) ? 'text-red-700 underline' : 'text-gray-900' ?> bg-transparent rounded md:p-0">
+                        <?= htmlspecialchars($row['path_name']) ?>
+                    </a>
+                </li>
                 <?php endwhile; ?>
                 <li>
                     <form action="" method="POST">
@@ -41,22 +40,22 @@ $result = $stmt->get_result();
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-    document.getElementById("logoutBtn").addEventListener("click", (e) => {
-        e.preventDefault();
-        logout();
+document.getElementById("logoutBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    logout();
+})
+
+
+function logout() {
+    $.ajax({
+        url: "../../php-prj/controllers/auth/logout.php",
+        type: "POST",
+        success: function() {
+            window.location.href = "/php-prj/views/auth/login.view.php";
+        },
+        error: function() {
+            console.error("Error occured!")
+        }
     })
-
-
-    function logout() {
-        $.ajax({
-            url: "../../php-prj/controllers/auth/logout.php",
-            type: "POST",
-            success: function() {
-                window.location.href = "/php-prj/views/auth/login.view.php";
-            },
-            error: function() {
-                console.error("Error occured!")
-            }
-        })
-    }
+}
 </script>

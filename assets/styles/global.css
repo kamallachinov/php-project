@@ -1,4 +1,4 @@
-[type="text"],
+/* [type="text"],
 input:where(:not([type])),
 [type="email"],
 [type="url"],
@@ -15,4 +15,8 @@ input:where(:not([type])),
 textarea,
 select {
   border-color: transparent !important;
+} */
+
+ul {
+  border: 0;
 }

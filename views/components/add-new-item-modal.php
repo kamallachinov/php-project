@@ -9,7 +9,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
         <h2 class="text-lg font-bold mb-4">Add New Item</h2>
 
         <?php if (!empty($dbError)): ?>
-        <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
+            <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
         <?php endif; ?>
         <form method="POST" action="">
             <div class="mb-4">
@@ -58,49 +58,49 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
 <script src="../../php-prj/utils/generic-ajax-requests/submit-form.js"></script>
 
 <script>
-const addItemBtn = document.getElementById("add-new-item-btn");
-const imageUrlInput = document.getElementById("imageUrlPostModal");
-const titleInput = document.getElementById("titlePostModal");
-const descInput = document.getElementById("descPostModal");
+    const addItemBtn = document.getElementById("add-new-item-btn");
+    const imageUrlInput = document.getElementById("imageUrlPostModal");
+    const titleInput = document.getElementById("titlePostModal");
+    const descInput = document.getElementById("descPostModal");
 
-const postNewItemFields = [{
-        id: "imageUrlPostModal",
-        label: "Image URL"
-    },
-    {
-        id: "titlePostModal",
-        label: "Title"
-    },
-    {
-        id: "descPostModal",
-        label: "Description"
-    }
-];
+    const postNewItemFields = [{
+            id: "imageUrlPostModal",
+            label: "Image URL"
+        },
+        {
+            id: "titlePostModal",
+            label: "Title"
+        },
+        {
+            id: "descPostModal",
+            label: "Description"
+        }
+    ];
 
-addItemBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const isValid = validateFormFields(postNewItemFields);
+    addItemBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const isValid = validateFormFields(postNewItemFields);
 
-    if (isValid) {
-        const data = {
-            action: "postAction",
-            imageUrlFieldPostModal: imageUrlInput.value.trim(),
-            titleFieldPostModal: titleInput.value.trim(),
-            descriptionFieldPostModal: descInput.value.trim()
-        };
-        submitForm(data, "../../php-prj/controllers/add-table-data.php", () => {
-            resetForm(postNewItemFields);
-            modalViewer("postNewItemModal", false);
-            fetchData();
-        });
-    } else {
-        toastr.error("Please fill in all fields.");
-    }
-})
+        if (isValid) {
+            const data = {
+                action: "postAction",
+                imageUrlFieldPostModal: imageUrlInput.value.trim(),
+                titleFieldPostModal: titleInput.value.trim(),
+                descriptionFieldPostModal: descInput.value.trim()
+            };
+            submitForm(data, "../../php-prj/controllers/add-table-data.php", () => {
+                resetForm(postNewItemFields);
+                modalViewer("postNewItemModal", false);
+                fetchData();
+            });
+        } else {
+            toastr.error("Please fill in all fields.");
+        }
+    })
 
-document.getElementById('openModal')?.addEventListener('click', () => modalViewer('postNewItemModal', true));
-document.getElementById('closeModal')?.addEventListener('click', () => {
-    modalViewer('postNewItemModal', false);
-    resetForm(postNewItemFields);
-});
+    document.getElementById('openModal')?.addEventListener('click', () => modalViewer('postNewItemModal', true));
+    document.getElementById('closeModal')?.addEventListener('click', () => {
+        modalViewer('postNewItemModal', false);
+        resetForm(postNewItemFields);
+    });
 </script>
