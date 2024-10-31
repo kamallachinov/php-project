@@ -78,7 +78,6 @@ require "../../php-prj/db/db-connection.php";
             }
         });
     }
-
     fetchData();
 
     document.querySelector('table').addEventListener('click', function(event) {

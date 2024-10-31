@@ -55,7 +55,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
 <script src="../../php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <!--Form submission -->
-<script src="../../php-prj/utils/generic-ajax-submission/submit-form.js"></script>
+<script src="../../php-prj/utils/generic-ajax-requests/submit-form.js"></script>
 
 <script>
 const addItemBtn = document.getElementById("add-new-item-btn");
@@ -84,9 +84,9 @@ addItemBtn.addEventListener("click", (e) => {
     if (isValid) {
         const data = {
             action: "postAction",
-            imageUrlFieldPostModal: document.getElementById("imageUrlPostModal").value.trim(),
-            titleFieldPostModal: document.getElementById("titlePostModal").value.trim(),
-            descriptionFieldPostModal: document.getElementById("descPostModal").value.trim()
+            imageUrlFieldPostModal: imageUrlInput.value.trim(),
+            titleFieldPostModal: titleInput.value.trim(),
+            descriptionFieldPostModal: descInput.value.trim()
         };
         submitForm(data, "../../php-prj/controllers/add-table-data.php", () => {
             resetForm(postNewItemFields);
@@ -101,6 +101,6 @@ addItemBtn.addEventListener("click", (e) => {
 document.getElementById('openModal')?.addEventListener('click', () => modalViewer('postNewItemModal', true));
 document.getElementById('closeModal')?.addEventListener('click', () => {
     modalViewer('postNewItemModal', false);
-    resetForm();
+    resetForm(postNewItemFields);
 });
 </script>
