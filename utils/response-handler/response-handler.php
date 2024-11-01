@@ -10,6 +10,7 @@ class ResponseHandler
             'message' => $message,
             'data' => $data
         ]);
+        exit;
     }
 
     public function ERROR_RESPONSE($error, $errorData = [], $code = 400)
@@ -21,5 +22,6 @@ class ResponseHandler
             'error' => $error,
             'errorData' => $errorData
         ]);
+        exit;
     }
 }

@@ -46,22 +46,51 @@
     </div>
 </div>
 
+
 <!-- jQuery library (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
     crossorigin="anonymous" referrerpolicy="no-referrer">
 </script>
 
+<!--Form error handler -->
+<script src="../../utils/form-error-handler/form-error-handler.js"></script>
+
 <script>
+const registerItemFields = [{
+        id: "username",
+        label: "Username"
+    },
+    {
+        id: "email",
+        label: "Email"
+    },
+    {
+        id: "password",
+        label: "Password"
+    },
+    {
+        id: "confirm_password",
+        label: "Confirm password"
+    }
+];
+
 document.getElementById("registerBtn").addEventListener("click", (e) => {
     e.preventDefault();
-    const data = {
-        username: document.getElementById("username").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value.trim(),
-        confirm_password: document.getElementById("confirm_password").value.trim()
-    };
-    register(data);
+    const isValid = validateFormFields(registerItemFields);
+
+    if (isValid) {
+        const data = {
+            username: document.getElementById("username").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            password: document.getElementById("password").value.trim(),
+            confirm_password: document.getElementById("confirm_password").value.trim()
+        };
+        register(data);
+    } else {
+        alert("Please fill in all fields.");
+    }
+
 })
 
 
