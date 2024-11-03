@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-bold text-gray-900 text-center mb-6">Create an Account</h1>
 
         <?php if (!empty($registerError)): ?>
-        <p class="text-red-600 text-center mb-4"><?= htmlspecialchars($registerError) ?></p>
+            <p class="text-red-600 text-center mb-4"><?= htmlspecialchars($registerError) ?></p>
         <?php endif; ?>
 
         <form method="POST" action="">
@@ -13,21 +13,18 @@
                 <label for="username" class="block text-gray-700">Username</label>
                 <input type="text" id="username" name="username" value="<?= htmlspecialchars($username ?? '') ?>"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($nameError) ? 'border-red-500' : ''; ?>">
-
             </div>
 
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($emailError) ? 'border-red-500' : ''; ?>">
-
             </div>
 
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">Password</label>
                 <input type="password" id="password" name="password"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($passwordError) ? 'border-red-500' : ''; ?>">
-
             </div>
 
             <div class="mb-4">
@@ -46,7 +43,6 @@
     </div>
 </div>
 
-
 <!-- jQuery library (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -57,61 +53,60 @@
 <script src="../../utils/form-error-handler/form-error-handler.js"></script>
 
 <script>
-const registerItemFields = [{
-        id: "username",
-        label: "Username"
-    },
-    {
-        id: "email",
-        label: "Email"
-    },
-    {
-        id: "password",
-        label: "Password"
-    },
-    {
-        id: "confirm_password",
-        label: "Confirm password"
-    }
-];
-
-document.getElementById("registerBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    const isValid = validateFormFields(registerItemFields);
-
-    if (isValid) {
-        const data = {
-            username: document.getElementById("username").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            password: document.getElementById("password").value.trim(),
-            confirm_password: document.getElementById("confirm_password").value.trim()
-        };
-        register(data);
-    } else {
-        alert("Please fill in all fields.");
-    }
-
-})
-
-
-function register(data) {
-    const action = "register"
-    $.ajax({
-        url: "../../controllers/auth/register.php",
-        type: "POST",
-        data: {
-            username: data.username,
-            email: data.email,
-            password: data.password,
-            confirm_password: data.confirm_password,
-            action: action,
+    const registerItemFields = [{
+            id: "username",
+            label: "Username"
         },
-        success: function(response) {
-            console.log(response)
+        {
+            id: "email",
+            label: "Email"
         },
-        error: function(error) {
-
+        {
+            id: "password",
+            label: "Password"
+        },
+        {
+            id: "confirm_password",
+            label: "Confirm password"
         }
+    ];
+
+    document.getElementById("registerBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        const isValid = validateFormFields(registerItemFields);
+
+        if (isValid) {
+            const data = {
+                username: document.getElementById("username").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                password: document.getElementById("password").value.trim(),
+                confirm_password: document.getElementById("confirm_password").value.trim()
+            };
+            register(data);
+        } else {
+            alert("Please fill in all fields.");
+        }
+
     })
-}
+
+    function register(data) {
+        const action = "register"
+        $.ajax({
+            url: "../../controllers/auth/register.php",
+            type: "POST",
+            data: {
+                username: data.username,
+                email: data.email,
+                password: data.password,
+                confirm_password: data.confirm_password,
+                action: action,
+            },
+            success: function(response) {
+                console.log(response)
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        })
+    }
 </script>
