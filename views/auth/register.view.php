@@ -13,21 +13,18 @@
                 <label for="username" class="block text-gray-700">Username</label>
                 <input type="text" id="username" name="username" value="<?= htmlspecialchars($username ?? '') ?>"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($nameError) ? 'border-red-500' : ''; ?>">
-
             </div>
 
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
                 <input type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($emailError) ? 'border-red-500' : ''; ?>">
-
             </div>
 
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">Password</label>
                 <input type="password" id="password" name="password"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($passwordError) ? 'border-red-500' : ''; ?>">
-
             </div>
 
             <div class="mb-4">
@@ -45,7 +42,6 @@
                 class="text-blue-500 hover:underline">Login</a></p>
     </div>
 </div>
-
 
 <!-- jQuery library (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -93,7 +89,6 @@ document.getElementById("registerBtn").addEventListener("click", (e) => {
 
 })
 
-
 function register(data) {
     const action = "register"
     $.ajax({
@@ -107,10 +102,10 @@ function register(data) {
             action: action,
         },
         success: function(response) {
-            console.log(response);
+            console.log(response)
         },
         error: function(error) {
-
+            console.log(error)
         }
     })
 }
