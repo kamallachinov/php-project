@@ -19,12 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     }
 
     if (empty($loginErrors['username']) && empty($loginErrors['password'])) {
-
         $sql = "SELECT * FROM `auth-data` WHERE username = ?";
 
         if ($stmt = $conn->prepare($sql)) {
-            print_r($stmt);
-
             $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -35,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                 if ($password == $user['password']) {
                     $isAuthenticated = true;
                     $_SESSION['message'] = "Login successful! Welcome, " . htmlspecialchars($user['username']);
-                    header('Location: ../../views/dashboard.view.php');
+                    header('Location: ../../views/home.view.php');
                     exit();
                 } else {
                     $loginErrors['password'] = "Invalid username or password";
@@ -51,7 +48,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
     $_SESSION['loginErrors'] = $loginErrors;
     $_SESSION['oldInputs'] = ['username' => $username];
-
     header('Location: ../../views/auth/login.view.php');
-    exit();
 }

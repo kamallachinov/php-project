@@ -1,5 +1,5 @@
 <?php
-session_start(); 
+session_start();
 $pageTitle = "Login page";
 require "../partials/head.php";
 
@@ -16,7 +16,7 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
 
         <?php if (!empty($flashMessage)): ?>
         <div class="alert alert-primary " role="alert">
-            <p class="text-success"><?=htmlspecialchars($flashMessage)  ?></p>
+            <p class="text-success"><?= htmlspecialchars($flashMessage)  ?></p>
         </div>
         <?php endif; ?>
 
