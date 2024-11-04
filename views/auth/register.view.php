@@ -107,7 +107,7 @@ function register(data) {
             action: action,
         },
         success: function(response) {
-            console.log(response)
+            console.log(response);
         },
         error: function(error) {
 
