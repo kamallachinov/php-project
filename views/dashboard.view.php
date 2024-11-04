@@ -39,7 +39,6 @@ require "../../php-prj/db/db-connection.php";
 <!--Footer Component -->
 <?php require "partials/footer.php" ?>
 
-
 <!-- Modal Viewer -->
 <script src="../../php-prj/utils/modal-viewer/modal-viewer.js"></script>
 

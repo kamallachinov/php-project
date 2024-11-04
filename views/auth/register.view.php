@@ -49,6 +49,12 @@
     crossorigin="anonymous" referrerpolicy="no-referrer">
 </script>
 
+<!-- TOASTR SCRIPTS & SWEET ALERT-->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <!--Form error handler -->
 <script src="../../utils/form-error-handler/form-error-handler.js"></script>
 
@@ -102,10 +108,20 @@ function register(data) {
             action: action,
         },
         success: function(response) {
-            console.log(response)
+            toastr.success(response.message)
+            fetchData();
+            resetForm(registerItemFields);
+            modalViewer("editModal", false);
         },
         error: function(error) {
-            console.log(error)
+            if (error.responseJSON) {
+                toastr.error(error.responseJSON.error) || "An unexpected error occurred.";
+                const errors = error.responseJSON.errorData || {};
+                formErrorHandler(errors, data.submitButtonId);
+            } else {
+                toastr.error("An unexpected error occurred.");
+            }
+            modalViewer("editModal", true);
         }
     })
 }
