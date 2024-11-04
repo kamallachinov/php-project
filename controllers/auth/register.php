@@ -46,7 +46,7 @@
 
             if ($sql->execute()) {
                 echo $responseHandler->SUCCESS_RESPONSE("Registered successfully", [], 201);
-                header("Location: ../../views/dashboard.view.php");
+                header('Location: ../../views/auth/login.view.php');
             } else {
                 echo $responseHandler->ERROR_RESPONSE("Error registering data", [], 500);
             }

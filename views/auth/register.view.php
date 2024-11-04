@@ -11,25 +11,26 @@
         <form method="POST" action="">
             <div class="mb-4">
                 <label for="username" class="block text-gray-700">Username</label>
-                <input type="text" id="username" name="username" value="<?= htmlspecialchars($username ?? '') ?>"
+                <input type="text" id="usernameRegister" name="username"
+                    value="<?= htmlspecialchars($username ?? '') ?>"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($nameError) ? 'border-red-500' : ''; ?>">
             </div>
 
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
-                <input type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>"
+                <input type="email" id="emailRegister" name="email" value="<?= htmlspecialchars($email ?? '') ?>"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($emailError) ? 'border-red-500' : ''; ?>">
             </div>
 
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">Password</label>
-                <input type="password" id="password" name="password"
+                <input type="password" id="passwordRegister" name="password"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($passwordError) ? 'border-red-500' : ''; ?>">
             </div>
 
             <div class="mb-4">
                 <label for="confirm_password" class="block text-gray-700">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password"
+                <input type="password" id="confirm_passwordRegister" name="confirm_password"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 <?= !empty($confirmPasswordError) ? 'border-red-500' : ''; ?>">
 
             </div>
@@ -60,19 +61,19 @@
 
 <script>
 const registerItemFields = [{
-        id: "username",
+        id: "usernameRegister",
         label: "Username"
     },
     {
-        id: "email",
+        id: "emailRegister",
         label: "Email"
     },
     {
-        id: "password",
+        id: "passwordRegister",
         label: "Password"
     },
     {
-        id: "confirm_password",
+        id: "confirm_passwordRegister",
         label: "Confirm password"
     }
 ];
@@ -83,10 +84,10 @@ document.getElementById("registerBtn").addEventListener("click", (e) => {
 
     if (isValid) {
         const data = {
-            username: document.getElementById("username").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            password: document.getElementById("password").value.trim(),
-            confirm_password: document.getElementById("confirm_password").value.trim()
+            username: document.getElementById("usernameRegister").value.trim(),
+            email: document.getElementById("emailRegister").value.trim(),
+            password: document.getElementById("passwordRegister").value.trim(),
+            confirm_password: document.getElementById("confirm_passwordRegister").value.trim()
         };
         register(data);
     } else {
@@ -109,19 +110,17 @@ function register(data) {
         },
         success: function(response) {
             toastr.success(response.message)
-            fetchData();
             resetForm(registerItemFields);
-            modalViewer("editModal", false);
         },
         error: function(error) {
             if (error.responseJSON) {
                 toastr.error(error.responseJSON.error) || "An unexpected error occurred.";
                 const errors = error.responseJSON.errorData || {};
-                formErrorHandler(errors, data.submitButtonId);
+                console.log(errors)
+                formErrorHandler(errors, "Register");
             } else {
                 toastr.error("An unexpected error occurred.");
             }
-            modalViewer("editModal", true);
         }
     })
 }

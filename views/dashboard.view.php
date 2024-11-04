@@ -106,7 +106,6 @@ document.querySelector('table').addEventListener('click', function(event) {
         imageUrlFieldEditModal.value = imageUrl;
         document.getElementById('titleEditModal').value = title;
         document.getElementById('descEditModal').value = description;
-
         document.getElementById('submit-edit-btn').setAttribute('data-id', id);
 
         modalViewer('editModal', true);
@@ -193,7 +192,7 @@ function update_data(data) {
             if (error.responseJSON) {
                 toastr.error(error.responseJSON.error) || "An unexpected error occurred.";
                 const errors = error.responseJSON.errorData || {};
-                formErrorHandler(errors, data.submitButtonId);
+                formErrorHandler(errors, "EditModal");
             } else {
                 toastr.error("An unexpected error occurred.");
             }
