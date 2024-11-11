@@ -1,10 +1,11 @@
 <?php
 session_start();
 require __DIR__ . '/../../db/db-connection.php';
+require "../../utils/response-handler/response-handler.php";
 
 $isAuthenticated = false;
+$responseHandler = new ResponseHandler();
 $loginErrors = [];
-$response = ['message' => '', 'errors' => $loginErrors];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == "loginAction") {
 
@@ -18,35 +19,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $loginErrors['password'] = 'Password is required';
     }
 
-    if (empty($loginErrors['username']) && empty($loginErrors['password'])) {
-        $sql = "SELECT * FROM `auth-data` WHERE username = ?";
-
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("s", $username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows == 1) {
-                $user = $result->fetch_assoc();
-
-                if ($password == $user['password']) {
-                    $isAuthenticated = true;
-                    $_SESSION['message'] = "Login successful! Welcome, " . htmlspecialchars($user['username']);
-                    header('Location: ../../views/home.view.php');
-                    exit();
-                } else {
-                    $loginErrors['password'] = "Invalid username or password";
-                }
-            } else {
-                $loginErrors['username'] = "Invalid username or password";
-            }
-            $stmt->close();
-        } else {
-            $_SESSION['message'] = "SQL error: " . $conn->error;
-        }
+    if (!empty($loginErrors)) {
+        echo $responseHandler->ERROR_RESPONSE("Validation errors", $loginErrors, 400);
+        exit();
     }
 
-    $_SESSION['loginErrors'] = $loginErrors;
-    $_SESSION['oldInputs'] = ['username' => $username];
-    header('Location: ../../views/auth/login.view.php');
+    $sql = "SELECT * FROM `auth-data` WHERE username = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+            $user = $result->fetch_assoc();
+
+            if (password_verify($password, $user['password'])) {
+                echo $responseHandler->SUCCESS_RESPONSE("Login successful! Welcome, " . htmlspecialchars($user['username']), [], 200);
+                $isAuthenticated = true;
+                $_SESSION['user'] = [
+                    'id' => $user['id'],
+                    'username' => $user['username']
+                ];
+                header('Location: ../../views/home.view.php');
+                exit();
+            } else {
+                $loginErrors['password'] = "Invalid username or password";
+                echo $responseHandler->ERROR_RESPONSE("Validation errors", $loginErrors, 401);
+            }
+        } else {
+            $loginErrors['username'] = "Invalid username or password";
+            echo $responseHandler->ERROR_RESPONSE("Validation errors", $loginErrors, 401);
+        }
+        $stmt->close();
+    } else {
+        echo $responseHandler->ERROR_RESPONSE("SQL error: " . $conn->error, [], 500);
+    }
+} else {
+    echo $responseHandler->ERROR_RESPONSE("Invalid request method", [], 405);
 }

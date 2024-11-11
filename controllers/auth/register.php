@@ -1,7 +1,7 @@
     <?php
     require "../../db/db-connection.php";
     require "../../utils/response-handler/response-handler.php";
-
+    require "../../utils/validator/validator.php";
 
     $responseHandler = new ResponseHandler();
     $registerErrors = [];
@@ -17,11 +17,28 @@
         $password = trim($_POST['password']) ?? "";
         $confirm_password = trim($_POST['confirm_password']) ?? "";
 
-        if (empty($username)) $registerErrors['username'] = 'Username is required';
-        if (empty($email)) $registerErrors['email'] = 'Email is required';
-        if (empty($password)) $registerErrors['password'] = 'Password is required';
-        if (empty($confirm_password)) $registerErrors['confirm_password'] = "Confirm password is required";
-        else if ($password !== $confirm_password) $registerErrors['confirm_password'] = "Passwords did not match.";
+
+        if (empty($username)) {
+            $registerErrors['username'] = 'Username is required';
+        }
+        if (empty($email)) {
+            $registerErrors['email'] = 'Email is required';
+        } else if (!Validator::email($email)) {
+            $registerErrors['email'] = 'Please write correct email format.';
+        }
+
+        if (empty($password)) {
+            $registerErrors['password'] = 'Password is required';
+        } else if (!Validator::password($password)) {
+            $registerErrors['password'] = 'Password must contain at least 8 characters, including an uppercase letter, a lowercase letter, a number, and a special character.';
+        }
+
+        if (empty($confirm_password)) {
+            $registerErrors['confirm_password'] = "Confirm password is required";
+        } else if ($password !== $confirm_password) {
+            $registerErrors['confirm_password'] = "Passwords did not match.";
+        }
+
 
         if (empty($registerErrors)) {
             $checkEmailStmt = $conn->prepare("SELECT id FROM `auth-data` WHERE email = ?");
@@ -32,6 +49,7 @@
 
                 if ($checkEmailStmt->fetch()) {
                     $registerErrors['email'] = "Email is already registered.";
+                    echo $responseHandler->ERROR_RESPONSE("Validation errors", $registerErrors,  404);
                 }
             } else {
                 echo $responseHandler->ERROR_RESPONSE("Error executing query: " . $conn->error, [], 500);
@@ -41,8 +59,9 @@
         }
 
         if (empty($registerErrors)) {
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
             $sql = $conn->prepare("INSERT INTO `auth-data` (username, email, password) VALUES (?, ?, ?)");
-            $sql->bind_param("sss", $username, $email, $password);
+            $sql->bind_param("sss", $username, $email, $hashed_password);
 
             if ($sql->execute()) {
                 echo $responseHandler->SUCCESS_RESPONSE("Registered successfully", [], 201);

@@ -23,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "postAction") 
         $stmt->bind_param("sss", $imageUrl, $title, $desc);
 
         if ($stmt->execute()) {
-            // header('Content-Type: application/json');
             echo  $response = $responseHandler->SUCCESS_RESPONSE("Posted successfully", [
                 'imageUrl' => $imageUrl,
                 'title' => $title,
