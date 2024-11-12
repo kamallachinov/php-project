@@ -1,7 +1,7 @@
 <?php
 define('APP_NAME', dirname(__FILE__));
 
-require  __DIR__ .  '/controllers/auth/login.php';
+$isAuthenticated = $_SESSION['isAuthenticated'] ?? false;
 
 if ($isAuthenticated) {
     header(APP_NAME .  "Location: /views/auth/login.view.php");

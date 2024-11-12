@@ -1,9 +1,8 @@
 <?php
 session_start();
 require __DIR__ . '/../../db/db-connection.php';
-require "../../utils/response-handler/response-handler.php";
+require __DIR__ . "/../../utils/response-handler/response-handler.php";
 
-$isAuthenticated = false;
 $responseHandler = new ResponseHandler();
 $loginErrors = [];
 
@@ -35,14 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             $user = $result->fetch_assoc();
 
             if (password_verify($password, $user['password'])) {
+                $_SESSION['isAuthenticated'] = true;
                 echo $responseHandler->SUCCESS_RESPONSE("Login successful! Welcome, " . htmlspecialchars($user['username']), [], 200);
-                $isAuthenticated = true;
                 $_SESSION['user'] = [
                     'id' => $user['id'],
                     'username' => $user['username']
                 ];
-                header('Location: ../../views/home.view.php');
-                exit();
+                header('Location:  ../../index.php');
             } else {
                 $loginErrors['password'] = "Invalid username or password";
                 echo $responseHandler->ERROR_RESPONSE("Validation errors", $loginErrors, 401);
