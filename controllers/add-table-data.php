@@ -1,7 +1,6 @@
 <?php
 require "../db/db-connection.php";
 require "../utils/response-handler/response-handler.php";
-$responseHandler = new ResponseHandler();
 
 $addErrors = [
     'imageUrl' => '',
@@ -23,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "postAction") 
         $stmt->bind_param("sss", $imageUrl, $title, $desc);
 
         if ($stmt->execute()) {
-            echo  $response = $responseHandler->SUCCESS_RESPONSE("Posted successfully", [
+            echo  $response = ResponseHandler::SUCCESS_RESPONSE("Posted successfully", [
                 'imageUrl' => $imageUrl,
                 'title' => $title,
                 'description' => $desc
@@ -33,10 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "postAction") 
             $desc = '';
         } else {
             $dbError = "Something went wrong. Please try again later.";
-            echo  $responseHandler->ERROR_RESPONSE("Error posting data", $dbError, 500);
+            echo  ResponseHandler::ERROR_RESPONSE("Error posting data", $dbError, 500);
         }
         $stmt->close();
     } else {
-        echo $responseHandler->ERROR_RESPONSE("Validation errors", $addErrors, 400);
+        echo ResponseHandler::ERROR_RESPONSE("Validation errors", $addErrors, 400);
     }
 }

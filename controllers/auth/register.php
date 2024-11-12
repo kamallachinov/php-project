@@ -3,11 +3,10 @@
     require "../../utils/response-handler/response-handler.php";
     require "../../utils/validator/validator.php";
 
-    $responseHandler = new ResponseHandler();
     $registerErrors = [];
 
     if (!isset($_POST["action"]) == "register") {
-        echo $responseHandler->ERROR_RESPONSE("Register action not set", [], 400);
+        echo ResponseHandler::ERROR_RESPONSE("Register action not set", [], 400);
         exit();
     }
 
@@ -49,10 +48,10 @@
 
                 if ($checkEmailStmt->fetch()) {
                     $registerErrors['email'] = "Email is already registered.";
-                    echo $responseHandler->ERROR_RESPONSE("Validation errors", $registerErrors,  404);
+                    echo ResponseHandler::ERROR_RESPONSE("Validation errors", $registerErrors,  404);
                 }
             } else {
-                echo $responseHandler->ERROR_RESPONSE("Error executing query: " . $conn->error, [], 500);
+                echo ResponseHandler::ERROR_RESPONSE("Error executing query: " . $conn->error, [], 500);
             }
 
             $checkEmailStmt->close();
@@ -64,15 +63,14 @@
             $sql->bind_param("sss", $username, $email, $hashed_password);
 
             if ($sql->execute()) {
-                echo $responseHandler->SUCCESS_RESPONSE("Registered successfully", [], 201);
-                header('Location: ../../views/auth/login.view.php');
+                echo ResponseHandler::SUCCESS_RESPONSE("Registered successfully", [], 201);
             } else {
-                echo $responseHandler->ERROR_RESPONSE("Error registering data", [], 500);
+                echo ResponseHandler::ERROR_RESPONSE("Error registering data", [], 500);
             }
             $sql->close();
         } else {
-            echo $responseHandler->ERROR_RESPONSE("Validation errors", $registerErrors, 400);
+            echo ResponseHandler::ERROR_RESPONSE("Validation errors", $registerErrors, 400);
         }
     } else {
-        echo $responseHandler->ERROR_RESPONSE("Invalid request method", [], 405);
+        echo ResponseHandler::ERROR_RESPONSE("Invalid request method", [], 405);
     }

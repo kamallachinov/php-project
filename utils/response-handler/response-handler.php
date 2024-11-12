@@ -1,7 +1,7 @@
 <?php
 class ResponseHandler
 {
-    public function SUCCESS_RESPONSE($message, $data = [], $code = 200)
+    public static function SUCCESS_RESPONSE($message, $data = [], $code = 200)
     {
         http_response_code($code);
         header('Content-Type: application/json');
@@ -13,7 +13,7 @@ class ResponseHandler
         exit;
     }
 
-    public function ERROR_RESPONSE($error, $errorData = [], $code = 400)
+    public static function ERROR_RESPONSE($error, $errorData = [], $code = 400)
     {
         http_response_code($code);
         header('Content-Type: application/json');

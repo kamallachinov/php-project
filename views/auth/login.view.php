@@ -1,7 +1,8 @@
 <?php
 session_start();
 $pageTitle = "Login page";
-require "../partials/head.php";
+
+require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
 
 $loginErrors = $_SESSION['loginErrors'] ?? [];
 $oldInputs = $_SESSION['oldInputs'] ?? [];
@@ -20,7 +21,7 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
         </div>
         <?php endif; ?>
 
-        <form method="POST" action="../../controllers/auth/login.php">
+        <form method="POST" action="/php-prj/controllers/auth/login.php">
             <div class="mb-4">
                 <label for="username" class="block text-gray-700">Username</label>
                 <input type="text" id="usernameLogin" name="username" autofocus="autofocus" autocomplete="off"
@@ -41,11 +42,10 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
                 class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">Login</button>
         </form>
 
-        <p class="text-sm text-gray-600 mt-4 text-center">Don't have an account? <a href="../auth/register.view.php"
-                class="text-blue-500 hover:underline">Sign Up</a></p>
+        <p class="text-sm text-gray-600 mt-4 text-center">Don't have an account? <a
+                href="/php-prj/views/auth/register.view.php" class="text-blue-500 hover:underline">Sign Up</a></p>
     </div>
 </div>
-
 
 <!-- jQuery library (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
@@ -60,7 +60,7 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--Form error handler -->
-<script src="../../utils/form-error-handler/form-error-handler.js"></script>
+<script src="/php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <script>
 const loginItemFields = [{
@@ -92,7 +92,7 @@ document.getElementById("loginBtn").addEventListener("click", (e) => {
 function login(data) {
     const action = "loginAction"
     $.ajax({
-        url: "../../controllers/auth/login.php",
+        url: "/php-prj/controllers/auth/login.php",
         type: "POST",
         data: {
             username: data.username,
@@ -100,8 +100,9 @@ function login(data) {
             action: action,
         },
         success: function(response) {
-            toastr.success(response.message)
+            window.location.href = '/php-prj/index.php';
             resetForm(loginItemFields);
+            toastr.success(response.message)
         },
         error: function(error) {
             if (error.responseJSON) {

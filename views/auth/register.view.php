@@ -1,4 +1,4 @@
-<?php require "../partials/head.php"; ?>
+<?php require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php"; ?>
 
 <div class="min-h-screen flex items-center justify-center">
     <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
@@ -57,7 +57,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!--Form error handler -->
-<script src="../../utils/form-error-handler/form-error-handler.js"></script>
+<script src="/php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <script>
 const registerItemFields = [{
@@ -99,7 +99,7 @@ document.getElementById("registerBtn").addEventListener("click", (e) => {
 function register(data) {
     const action = "register"
     $.ajax({
-        url: "../../controllers/auth/register.php",
+        url: "/php-prj/controllers/auth/register.php",
         type: "POST",
         data: {
             username: data.username,
@@ -111,6 +111,7 @@ function register(data) {
         success: function(response) {
             toastr.success(response.message)
             resetForm(registerItemFields);
+            window.location.href = "/php-prj/views/auth/login.view.php"
         },
         error: function(error) {
             if (error.responseJSON) {

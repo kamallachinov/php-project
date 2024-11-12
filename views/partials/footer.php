@@ -4,7 +4,7 @@
 
 
 <!-- Modal Viewer -->
-<script src="../../php-prj/utils/modal-viewer/modal-viewer.js"></script>
+<script src="/php-prj/utils/modal-viewer/modal-viewer.js"></script>
 
 <!-- jQuery library (required) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"

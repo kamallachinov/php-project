@@ -1,5 +1,5 @@
 <?php
-require "../controllers/add-table-data.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/controllers/add-table-data.php";
 $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !empty($addErrors['desc']);
 ?>
 
@@ -9,7 +9,7 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
         <h2 class="text-lg font-bold mb-4">Add New Item</h2>
 
         <?php if (!empty($dbError)): ?>
-            <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
+        <p class="text-red-600"><?= htmlspecialchars($dbError) ?></p>
         <?php endif; ?>
         <form method="POST" action="">
             <div class="mb-4">
@@ -49,58 +49,58 @@ $showModal = !empty($addErrors['imageUrl']) || !empty($addErrors['title']) || !e
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <!-- Modal Viewer -->
-<script src="../../php-prj/utils/modal-viewer/modal-viewer.js"></script>
+<script src="/php-prj/utils/modal-viewer/modal-viewer.js"></script>
 
 <!--Form error handler -->
-<script src="../../php-prj/utils/form-error-handler/form-error-handler.js"></script>
+<script src="/php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <!--Form submission -->
-<script src="../../php-prj/utils/generic-ajax-requests/submit-form.js"></script>
+<script src="/php-prj/utils/generic-ajax-requests/submit-form.js"></script>
 
 <script>
-    const addItemBtn = document.getElementById("add-new-item-btn");
-    const imageUrlInput = document.getElementById("imageUrlPostModal");
-    const titleInput = document.getElementById("titlePostModal");
-    const descInput = document.getElementById("descPostModal");
+const addItemBtn = document.getElementById("add-new-item-btn");
+const imageUrlInput = document.getElementById("imageUrlPostModal");
+const titleInput = document.getElementById("titlePostModal");
+const descInput = document.getElementById("descPostModal");
 
-    const postNewItemFields = [{
-            id: "imageUrlPostModal",
-            label: "Image URL"
-        },
-        {
-            id: "titlePostModal",
-            label: "Title"
-        },
-        {
-            id: "descPostModal",
-            label: "Description"
-        }
-    ];
+const postNewItemFields = [{
+        id: "imageUrlPostModal",
+        label: "Image URL"
+    },
+    {
+        id: "titlePostModal",
+        label: "Title"
+    },
+    {
+        id: "descPostModal",
+        label: "Description"
+    }
+];
 
-    addItemBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const isValid = validateFormFields(postNewItemFields);
+addItemBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const isValid = validateFormFields(postNewItemFields);
 
-        if (isValid) {
-            const data = {
-                action: "postAction",
-                imageUrlFieldPostModal: imageUrlInput.value.trim(),
-                titleFieldPostModal: titleInput.value.trim(),
-                descriptionFieldPostModal: descInput.value.trim()
-            };
-            submitForm(data, "../../php-prj/controllers/add-table-data.php", () => {
-                resetForm(postNewItemFields);
-                modalViewer("postNewItemModal", false);
-                fetchData();
-            });
-        } else {
-            toastr.error("Please fill in all fields.");
-        }
-    })
+    if (isValid) {
+        const data = {
+            action: "postAction",
+            imageUrlFieldPostModal: imageUrlInput.value.trim(),
+            titleFieldPostModal: titleInput.value.trim(),
+            descriptionFieldPostModal: descInput.value.trim()
+        };
+        submitForm(data, "/php-prj/controllers/add-table-data.php", () => {
+            resetForm(postNewItemFields);
+            modalViewer("postNewItemModal", false);
+            fetchData();
+        });
+    } else {
+        toastr.error("Please fill in all fields.");
+    }
+})
 
-    document.getElementById('openModal')?.addEventListener('click', () => modalViewer('postNewItemModal', true));
-    document.getElementById('closeModal')?.addEventListener('click', () => {
-        modalViewer('postNewItemModal', false);
-        resetForm(postNewItemFields);
-    });
+document.getElementById('openModal')?.addEventListener('click', () => modalViewer('postNewItemModal', true));
+document.getElementById('closeModal')?.addEventListener('click', () => {
+    modalViewer('postNewItemModal', false);
+    resetForm(postNewItemFields);
+});
 </script>

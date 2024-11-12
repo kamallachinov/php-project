@@ -1,7 +1,8 @@
 <?php
 require "partials/head.php";
 require "partials/nav.php";
-require "../../php-prj/db/db-connection.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/db/db-connection.php";
+
 ?>
 
 <main>
@@ -40,10 +41,10 @@ require "../../php-prj/db/db-connection.php";
 <?php require "partials/footer.php" ?>
 
 <!-- Modal Viewer -->
-<script src="../../php-prj/utils/modal-viewer/modal-viewer.js"></script>
+<script src="/php-prj/utils/modal-viewer/modal-viewer.js"></script>
 
 <!--Form error handler -->
-<script src="../../php-prj/utils/form-error-handler/form-error-handler.js"></script>
+<script src="/php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <script>
 const editModalWrapper = document.getElementById('editModal');
@@ -65,7 +66,7 @@ const updateItemFields = [{
 
 function fetchData() {
     $.ajax({
-        url: "../controllers/get-data.php",
+        url: "/php-prj/controllers/get-data.php",
         type: "GET",
         success: function(data) {
             let tableBody = document.querySelector('table tbody');
@@ -152,14 +153,14 @@ document.getElementById("submit-edit-btn").addEventListener("click", function(e)
 function deleteData(id) {
     let action = "dltRecord";
     $.ajax({
-        url: "../controllers/delete-table-data.php",
+        url: "/php-prj/controllers/delete-table-data.php",
         type: "POST",
         data: {
             action: action,
             id: id
         },
-        success: function(data) {
-            toastr.success(data);
+        success: function(response) {
+            toastr.success(response.message);
 
             fetchData();
         },
@@ -173,7 +174,7 @@ function update_data(data) {
     let action = "updateAction";
 
     $.ajax({
-        url: "../controllers/update-table-data.php",
+        url: "/php-prj/controllers/update-table-data.php",
         type: "POST",
         data: {
             id: data.id,

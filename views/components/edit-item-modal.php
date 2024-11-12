@@ -1,6 +1,5 @@
 <?php
-require "../db/db-connection.php";
-
+require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/db/db-connection.php";
 ?>
 <div id="editModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden ">
     <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
@@ -36,10 +35,10 @@ require "../db/db-connection.php";
 </div>
 
 <!-- Modal Viewer -->
-<script src="../utils/modal-viewer/modal-viewer.js"></script>
+<script src="/php-prj/utils/modal-viewer/modal-viewer.js"></script>
 
 <!--Form error handler -->
-<script src="../../php-prj/utils/form-error-handler/form-error-handler.js"></script>
+<script src="/php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <script>
 document.getElementById('closeEditModal')?.addEventListener('click', () => {

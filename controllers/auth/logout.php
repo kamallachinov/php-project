@@ -1,5 +1,3 @@
-<?php 
-  session_start(); 
-  session_destroy(); 
-  header("Location: ../../views/auth/login.view.php"); 
-?>
+<?php
+require __DIR__ . "/../../utils/response-handler/response-handler.php";
+echo ResponseHandler::SUCCESS_RESPONSE("Logout successful!", ['isAuthenticated' => false], 200);

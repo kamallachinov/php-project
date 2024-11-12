@@ -48,7 +48,7 @@ document.getElementById("logoutBtn").addEventListener("click", (e) => {
 
 function logout() {
     $.ajax({
-        url: "../../php-prj/controllers/auth/logout.php",
+        url: "/php-prj/controllers/auth/logout.php",
         type: "POST",
         success: function() {
             window.location.href = "/php-prj/views/auth/login.view.php";

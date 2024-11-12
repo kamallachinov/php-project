@@ -2,7 +2,7 @@
 require "../db/db-connection.php";
 require "../utils/response-handler/response-handler.php";
 
-$responseHandler = new ResponseHandler();
+// $responseHandler = new ResponseHandler();
 
 $editErrors = [
     'imageUrl' => '',
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
             $newTitle === $currentTitle &&
             $newDesc === $currentDescription
         ) {
-            echo $responseHandler->ERROR_RESPONSE("No changes detected. Nothing to update.");
+            echo ResponseHandler::ERROR_RESPONSE("No changes detected. Nothing to update.");
         } else {
             $update_query = "UPDATE dashboard_data SET imageUrl = ?, Title = ?, Description = ? WHERE id = ?";
             $update_stmt = $conn->prepare($update_query);
@@ -47,21 +47,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
 
             if (!empty($newImageUrl) && !empty($newDesc) && !empty($newTitle)) {
                 if ($update_stmt->execute()) {
-                    echo $responseHandler->SUCCESS_RESPONSE("Record updated successfully.", [
+                    echo ResponseHandler::SUCCESS_RESPONSE("Record updated successfully.", [
                         'imageUrl' => $newImageUrl,
                         'title' => $newTitle,
                         'description' => $newDesc
                     ]);
                 } else {
-                    echo $responseHandler->ERROR_RESPONSE("An error occurred while updating the record.");
+                    echo ResponseHandler::ERROR_RESPONSE("An error occurred while updating the record.");
                 }
             } else {
-                echo $responseHandler->ERROR_RESPONSE("Validation errors occurred.", $editErrors);
+                echo ResponseHandler::ERROR_RESPONSE("Validation errors occurred.", $editErrors);
             }
         }
     } else {
-        echo $responseHandler->ERROR_RESPONSE("No record found for the specified ID.");
+        echo ResponseHandler::ERROR_RESPONSE("No record found for the specified ID.");
     }
 } else {
-    echo $responseHandler->ERROR_RESPONSE("Invalid request method or action.");
+    echo ResponseHandler::ERROR_RESPONSE("Invalid request method or action.");
 }

@@ -1,10 +1,9 @@
 <?php
-    $pageTitle = "Detailed page";
-    require "../../db/db-connection.php";
-    require "../../controllers/get-single-data.php";
-    require "../partials/nav.php";
-    require "../partials/head.php";
-
+$pageTitle = "Detailed page";
+require "../../db/db-connection.php";
+require "../../controllers/get-single-data.php";
+require "../partials/nav.php";
+require "../partials/head.php";
 ?>
 
 
@@ -22,4 +21,4 @@
     </a>
 </div>
 
-<?php  require "../partials/footer.php";?>
+<?php require "../partials/footer.php"; ?>
