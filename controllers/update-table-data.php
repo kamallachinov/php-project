@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && $_POST['action'] === "updateAction"
 
             if (!empty($newImageUrl) && !empty($newDesc) && !empty($newTitle)) {
                 if ($update_stmt->execute()) {
-                    echo ResponseHandler::SUCCESS_RESPONSE("Record updated successfully.", [
+                    echo ResponseHandler::SUCCESS_RESPONSE("Record updated successfully!", [
                         'imageUrl' => $newImageUrl,
                         'title' => $newTitle,
                         'description' => $newDesc
