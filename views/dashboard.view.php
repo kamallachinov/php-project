@@ -68,27 +68,51 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/db/db-connection.php";
         $.ajax({
             url: "/php-prj/controllers/get-data.php",
             type: "GET",
-            success: function(data) {
+            success: function(response) {
                 let tableBody = document.querySelector('table tbody');
                 tableBody.innerHTML = '';
 
-                let rows = JSON.parse(data);
-                console.log(rows, 'rows')
-                rows.forEach(row => {
+                response.data.forEach(row => {
                     let tr = document.createElement('tr');
                     tr.className = "bg-gray-900 hover:bg-gray-700";
-                    tr.innerHTML = `
-                        <td class="px-4 py-2">${row.imageUrl}</td>
-                        <td class="px-4 py-2">${row.Title}</td>
-                        <td class="px-4 py-2">${row.Description}</td>
-                        <td class="px-4 py-2">
-                            <button href="#" class="text-blue-400 hover:underline update-btn"  data-id="${row.id}" data-image="${row.imageUrl}" data-title="${row.Title}" data-description="${row.Description}">Edit</button>
-                        </td>
-                        <td class="px-4 py-2">
-                            <a href="#" class="text-red-400 hover:underline delete-btn" data-id="${row.id}">Delete</a>
-                        </td>`
-                    tableBody.appendChild(tr);
+
+                    let tdImageUrl = document.createElement('td');
+                    tdImageUrl.className = "px-4 py-2";
+                    tdImageUrl.textContent = row.imageUrl;
+
+                    let tdTitle = document.createElement('td');
+                    tdTitle.className = "px-4 py-2";
+                    tdTitle.textContent = row.Title;
+
+                    let tdDescription = document.createElement('td');
+                    tdDescription.className = "px-4 py-2";
+                    tdDescription.textContent = row.Description;
+
+                    let tdEdit = document.createElement('td');
+                    tdEdit.className = "px-4 py-2";
+                    let editButton = document.createElement('button');
+                    editButton.className = "text-blue-400 hover:underline update-btn";
+                    editButton.setAttribute('data-id', row.id);
+                    editButton.setAttribute('data-image', row.imageUrl);
+                    editButton.setAttribute('data-title', row.Title);
+                    editButton.setAttribute('data-description', row.Description);
+                    editButton.textContent = "Edit";
+                    tdEdit.appendChild(editButton);
+
+                    let tdDelete = document.createElement('td');
+                    tdDelete.className = "px-4 py-2";
+                    let deleteButton = document.createElement('a');
+                    deleteButton.href = "#";
+                    deleteButton.className = "text-red-400 hover:underline delete-btn";
+                    deleteButton.setAttribute('data-id', row.id);
+                    deleteButton.textContent = "Delete";
+                    tdDelete.appendChild(deleteButton);
+
+                    tr.append(tdImageUrl, tdTitle, tdDescription, tdEdit, tdDelete);
+
+                    tableBody.append(tr);
                 });
+
             },
             error: function(error) {
                 console.error('There was a problem:', error);

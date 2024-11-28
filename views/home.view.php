@@ -11,55 +11,54 @@ require "partials/nav.php";
     </div>
 
 
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" id="trendingImages"></div>
+    <div class="max-w-screen-xl flex flex-wrap items-center gap-3 mx-auto p-4" id="trendingImages"></div>
 
 </main>
 
 <?php require "partials/footer.php" ?>
 
 <script>
-function fetchData() {
-    $.ajax({
-        url: "/php-prj/controllers/get-data.php",
-        type: "GET",
-        success: function(response) {
-            console.log(response);
-            renderTrendingImages(response.data);
-        },
-        error: function(error) {
-            console.error("Error fetching data:", error);
-        },
-    });
-}
-document.getElementById("searchInput").addEventListener("input", (e) => {
-    const query = e.target.value;
-
-    $.ajax({
-        url: `/php-prj/controllers/search-query/search-trending-images.php?query=${encodeURIComponent(query)}`,
-        type: "GET",
-        success: function(response) {
-            renderTrendingImages(response.data);
-        },
-        error: function(response) {
-            toastr.error("Error response:", response);
-        }
-    });
-});
-
-function renderTrendingImages(images) {
-    const container = document.getElementById("trendingImages");
-    container.innerHTML = "";
-
-    if (!images || images.length === 0) {
-        container.innerHTML = "<p>No results found.</p>";
-        return;
+    function fetchData() {
+        $.ajax({
+            url: "/php-prj/controllers/get-data.php",
+            type: "GET",
+            success: function(response) {
+                renderTrendingImages(response.data);
+            },
+            error: function(error) {
+                console.error("Error fetching data:", error);
+            },
+        });
     }
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+        const query = e.target.value;
 
-    images.forEach((image) => {
-        const card = document.createElement("div");
-        card.className =
-            "max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-w-[400px] min-h-[430px]";
-        card.innerHTML = `
+        $.ajax({
+            url: `/php-prj/controllers/search-query/search-trending-images.php?query=${encodeURIComponent(query)}`,
+            type: "GET",
+            success: function(response) {
+                renderTrendingImages(response.data);
+            },
+            error: function(response) {
+                toastr.error("Error response:", response);
+            }
+        });
+    });
+
+    function renderTrendingImages(images) {
+        const container = document.getElementById("trendingImages");
+        container.innerHTML = "";
+
+        if (!images || images.length === 0) {
+            container.innerHTML = "<p>No results found.</p>";
+            return;
+        }
+
+        images.forEach((image) => {
+            const card = document.createElement("div");
+            card.className =
+                "max-w-sm bg-white border border-gray-200 rounded-lg  dark:bg-gray-800 dark:border-gray-700 min-w-[400px] min-h-[430px]";
+            card.innerHTML = `
             <a href="#">
                 <img class="rounded-t-lg w-full object-cover h-[220px]" 
                     src="${image.imageUrl || '/path/to/default-image.jpg'}" 
@@ -86,8 +85,8 @@ function renderTrendingImages(images) {
                 </a>
             </div>
         `;
-        container.appendChild(card);
-    });
-}
-fetchData()
+            container.appendChild(card);
+        });
+    }
+    fetchData()
 </script>
