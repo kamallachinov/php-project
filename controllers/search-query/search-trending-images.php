@@ -26,10 +26,10 @@ try {
         $images[] = $row;
     }
 
-    if (empty($images)) {
-        echo ResponseHandler::SUCCESS_RESPONSE("No results found.", [], 200);
-    } else {
+    if (!empty($images)) {
         echo ResponseHandler::SUCCESS_RESPONSE("Found items", $images, 200);
+    } else {
+        echo ResponseHandler::SUCCESS_RESPONSE("No results found.", [], 200);
     }
 } catch (Exception $e) {
     echo ResponseHandler::ERROR_RESPONSE("Error fetching items: " . $e->getMessage(), 500);

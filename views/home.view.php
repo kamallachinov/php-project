@@ -16,39 +16,36 @@ require "partials/nav.php";
 <?php require "partials/footer.php" ?>
 
 <script>
-    document.getElementById("searchInput").addEventListener("input", (e) => {
-        const query = e.target.value;
+document.getElementById("searchInput").addEventListener("input", (e) => {
+    const query = e.target.value;
 
-        $.ajax({
-            url: `/php-prj/controllers/search-query/search-trending-images.php?query=${encodeURIComponent(query)}`,
-            type: "GET",
-            success: function(response) {
-                JSON.parse(response);
-                console.log(response, 'salam');
-                renderTrendingImages(response.data);
-            },
-            error: function(response) {
-                console.log(response, 'err')
-                toastr.error("Error response:", response);
-            }
-        });
-    });
-
-    function renderTrendingImages(images) {
-        const container = document.getElementById("trendingImages");
-        container.innerHTML = "";
-
-        if (images.length === 0) {
-            container.innerHTML = "<p>No results found.</p>";
-            return;
+    $.ajax({
+        url: `/php-prj/controllers/search-query/search-trending-images.php?query=${encodeURIComponent(query)}`,
+        type: "GET",
+        success: function(response) {
+            renderTrendingImages(response.data);
+        },
+        error: function(response) {
+            toastr.error("Error response:", response);
         }
+    });
+});
 
-        images.forEach(image => {
-            const card = document.createElement("div");
-            card.classList =
-                "max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-w-[400px] min-h-[430px]";
+function renderTrendingImages(images) {
+    const container = document.getElementById("trendingImages");
+    container.innerHTML = "";
 
-            card.innerHTML = `
+    if (images.length === 0) {
+        container.innerHTML = "<p>No results found.</p>";
+        return;
+    }
+
+    images.forEach(image => {
+        const card = document.createElement("div");
+        card.classList =
+            "max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-w-[400px] min-h-[430px]";
+
+        card.innerHTML = `
             <a href="#">
                 <img class="rounded-t-lg w-full object-cover h-[220px]"
                     src="${image.imageUrl || '/path/to/default-image.jpg'}"
@@ -75,7 +72,7 @@ require "partials/nav.php";
             </div>
         `;
 
-            container.appendChild(card);
-        });
-    }
+        container.appendChild(card);
+    });
+}
 </script>
