@@ -1,17 +1,19 @@
 <?php
 require "../db/db-connection.php";
+require "../utils/response-handler/response-handler.php";
 
 $sql = "SELECT * FROM dashboard_data";
 $result = $conn->query($sql);
 
 $data = [];
 
-if ($result->num_rows > 0) {
+if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
+    ResponseHandler::SUCCESS_RESPONSE("Found items", $data, 200);
+} else {
+    ResponseHandler::ERROR_RESPONSE("No items found", [], 404);
 }
 
-echo json_encode($data);
 $conn->close();
-?>
