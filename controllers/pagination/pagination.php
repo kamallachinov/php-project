@@ -33,7 +33,7 @@ $paginatedData = $result->fetch_all(MYSQLI_ASSOC);
 $response = [
     "totalDataCount" => $totalDataCount,
     "pageCount" => $pageCount,
-    "data" => $paginatedData
+    "paginatedData" => $paginatedData
 ];
 
 echo ResponseHandler::SUCCESS_RESPONSE("Success", $response, 200);

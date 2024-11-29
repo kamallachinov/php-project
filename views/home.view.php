@@ -28,10 +28,10 @@ require "partials/nav.php";
             type: "GET",
             success: function(response) {
                 const {
-                    data,
+                    paginatedData,
                     pageCount
                 } = response.data;
-                renderTrendingImages(data);
+                renderTrendingImages(paginatedData);
                 generatePageButton(pageCount, pageNumber);
             },
             error: function(error) {
