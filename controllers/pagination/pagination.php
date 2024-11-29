@@ -7,8 +7,8 @@ $pageSize = isset($_GET['pageSize']) ? (int)$_GET['pageSize'] : 3;
 $pageNumber = isset($_GET['pageNumber']) ? (int)$_GET['pageNumber'] : 1;
 
 // Validate input
-$pageSize = max(1, $pageSize); // Ensure pageSize is at least 1
-$pageNumber = max(1, $pageNumber); // Ensure pageNumber is at least 1
+$pageSize = max(1, $pageSize);
+$pageNumber = max(1, $pageNumber);
 
 // Calculate the starting index for the current page
 $startIndex = ($pageNumber - 1) * $pageSize;
