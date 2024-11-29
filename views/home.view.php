@@ -13,23 +13,33 @@ require "partials/nav.php";
 
     <div class="max-w-screen-xl flex flex-wrap items-center gap-3 mx-auto p-4" id="trendingImages"></div>
 
+    <nav class="flex justify-center items-center py-5">
+        <ul class="pagination" id="paginationList"></ul>
+    </nav>
+
 </main>
 
 <?php require "partials/footer.php" ?>
 
 <script>
-    function fetchData() {
+    function fetchTrendingImages(pageSize, pageNumber) {
         $.ajax({
-            url: "/php-prj/controllers/get-data.php",
+            url: `/php-prj/controllers/pagination/pagination.php?pageSize=${pageSize}&pageNumber=${pageNumber}`,
             type: "GET",
             success: function(response) {
-                renderTrendingImages(response.data);
+                const {
+                    data,
+                    pageCount
+                } = response.data;
+                renderTrendingImages(data);
+                generatePageButton(pageCount, pageNumber);
             },
             error: function(error) {
                 console.error("Error fetching data:", error);
             },
         });
     }
+
     document.getElementById("searchInput").addEventListener("input", (e) => {
         const query = e.target.value;
 
@@ -88,5 +98,42 @@ require "partials/nav.php";
             container.appendChild(card);
         });
     }
-    fetchData()
+
+    function generatePageButton(pageCount, currentPage) {
+        const paginationList = document.getElementById("paginationList");
+        paginationList.innerHTML = ""; // Clear existing pagination
+
+        // // Create "Previous" button
+        // const prevItem = document.createElement("li");
+        // prevItem.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+        // prevItem.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+        // prevItem.addEventListener("click", () => {
+        //     if (currentPage > 1) fetchTrendingImages(3, currentPage - 1);
+        // });
+        // paginationList.appendChild(prevItem);
+
+        // Create page number buttons
+        for (let i = 1; i <= pageCount; i++) {
+            const paginationItem = document.createElement("li");
+            paginationItem.className = `page-item ${i === currentPage ? "active" : ""}`;
+
+            paginationItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            paginationItem.addEventListener("click", () => fetchTrendingImages(3, i));
+            paginationList.append(paginationItem);
+        }
+
+        // // Create "Next" button
+        // const nextItem = document.createElement("li");
+        // nextItem.className = `page-item ${currentPage === pageCount ? "disabled" : ""}`;
+        // nextItem.innerHTML = `<a class="page-link" href="#">Next</a>`;
+        // nextItem.addEventListener("click", () => {
+        //     if (currentPage < pageCount) fetchTrendingImages(3, currentPage + 1);
+        // });
+        // paginationList.appendChild(nextItem);
+    }
+
+
+
+
+    fetchTrendingImages(3, 1)
 </script>

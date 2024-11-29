@@ -1,6 +1,6 @@
 <?php
-require "../db/db-connection.php";
-require "../utils/response-handler/response-handler.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/db/db-connection.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/utils/response-handler/response-handler.php";
 
 $sql = "SELECT * FROM dashboard_data";
 $result = $conn->query($sql);
