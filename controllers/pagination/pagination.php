@@ -17,7 +17,7 @@ $startIndex = ($pageNumber - 1) * $pageSize;
 $totalDataCountQuery = "SELECT COUNT(*) AS total FROM dashboard_data";
 $totalDataResult = $conn->query($totalDataCountQuery);
 $totalDataCountRow = $totalDataResult->fetch_assoc();
-$totalDataCount = (int)$totalDataCountRow['total'];
+$totalDataCount = intval($totalDataCountRow['total']);
 
 // Calculate total pages
 $pageCount = ceil($totalDataCount / $pageSize);

@@ -101,16 +101,16 @@ require "partials/nav.php";
 
     function generatePageButton(pageCount, currentPage) {
         const paginationList = document.getElementById("paginationList");
-        paginationList.innerHTML = ""; // Clear existing pagination
+        paginationList.innerHTML = "";
 
-        // // Create "Previous" button
-        // const prevItem = document.createElement("li");
-        // prevItem.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
-        // prevItem.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-        // prevItem.addEventListener("click", () => {
-        //     if (currentPage > 1) fetchTrendingImages(3, currentPage - 1);
-        // });
-        // paginationList.appendChild(prevItem);
+        // Create "Previous" button
+        const prevItem = document.createElement("li");
+        prevItem.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+        prevItem.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+        prevItem.addEventListener("click", () => {
+            if (currentPage > 1) fetchTrendingImages(3, currentPage - 1);
+        });
+        paginationList.appendChild(prevItem);
 
         // Create page number buttons
         for (let i = 1; i <= pageCount; i++) {
@@ -122,14 +122,14 @@ require "partials/nav.php";
             paginationList.append(paginationItem);
         }
 
-        // // Create "Next" button
-        // const nextItem = document.createElement("li");
-        // nextItem.className = `page-item ${currentPage === pageCount ? "disabled" : ""}`;
-        // nextItem.innerHTML = `<a class="page-link" href="#">Next</a>`;
-        // nextItem.addEventListener("click", () => {
-        //     if (currentPage < pageCount) fetchTrendingImages(3, currentPage + 1);
-        // });
-        // paginationList.appendChild(nextItem);
+        // Create "Next" button
+        const nextItem = document.createElement("li");
+        nextItem.className = `page-item ${currentPage === pageCount ? "disabled" : ""}`;
+        nextItem.innerHTML = `<a class="page-link" href="#">Next</a>`;
+        nextItem.addEventListener("click", () => {
+            if (currentPage < pageCount) fetchTrendingImages(3, currentPage + 1);
+        });
+        paginationList.appendChild(nextItem);
     }
 
 
