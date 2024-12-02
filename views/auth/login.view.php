@@ -16,9 +16,9 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
         <h1 class="text-2xl font-bold text-gray-900 text-center mb-6">Login to Your Account</h1>
 
         <?php if (!empty($flashMessage)): ?>
-        <div class="alert alert-primary " role="alert">
-            <p class="text-success"><?= htmlspecialchars($flashMessage)  ?></p>
-        </div>
+            <div class="alert alert-primary " role="alert">
+                <p class="text-success"><?= htmlspecialchars($flashMessage)  ?></p>
+            </div>
         <?php endif; ?>
 
         <form method="POST" action="/php-prj/controllers/auth/login.php">
@@ -30,16 +30,19 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
                     value="<?= htmlspecialchars($oldInputs['username'] ?? '') ?>">
             </div>
 
-            <div class="mb-4">
+            <div>
                 <label for="password" class="block text-gray-700">Password</label>
                 <input type="password" id="passwordLogin" name="password" autocomplete="off" autocorrect="off"
                     autocapitalize="off" spellcheck="false"
                     class="w-full  py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
+            <a href="/php-prj/views/auth/forgot-password.view.php" class="text-blue-500 hover:underline">Forgot
+                password?</a>
+
             <input type="hidden" name="action" value="loginAction">
             <button type="submit" id="loginBtn"
-                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">Login</button>
+                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors mt-4">Login</button>
         </form>
 
         <p class="text-sm text-gray-600 mt-4 text-center">Don't have an account? <a
@@ -63,57 +66,57 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
 <script src="/php-prj/utils/form-error-handler/form-error-handler.js"></script>
 
 <script>
-const loginItemFields = [{
-        id: "usernameLogin",
-        label: "Username"
-    },
-    {
-        id: "passwordLogin",
-        label: "Password"
-    },
-];
-
-document.getElementById("loginBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    const isValid = validateFormFields(loginItemFields);
-
-    if (isValid) {
-        const data = {
-            username: document.getElementById("usernameLogin").value.trim(),
-            password: document.getElementById("passwordLogin").value.trim(),
-        };
-        login(data);
-    } else {
-        alert("Please fill in all fields.");
-    }
-
-})
-
-function login(data) {
-    const action = "loginAction"
-    $.ajax({
-        url: "/php-prj/controllers/auth/login.php",
-        type: "POST",
-        data: {
-            username: data.username,
-            password: data.password,
-            action: action,
+    const loginItemFields = [{
+            id: "usernameLogin",
+            label: "Username"
         },
-        success: function(response) {
-            window.location.href = '/php-prj/index.php';
-            resetForm(loginItemFields);
-            toastr.success(response.message)
+        {
+            id: "passwordLogin",
+            label: "Password"
         },
-        error: function(error) {
-            if (error.responseJSON) {
-                toastr.error(error.responseJSON.error) || "An unexpected error occurred.";
-                const errors = error.responseJSON.errorData || {};
-                console.log(errors)
-                formErrorHandler(errors, "Register");
-            } else {
-                toastr.error("An unexpected error occurred.");
-            }
+    ];
+
+    document.getElementById("loginBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        const isValid = validateFormFields(loginItemFields);
+
+        if (isValid) {
+            const data = {
+                username: document.getElementById("usernameLogin").value.trim(),
+                password: document.getElementById("passwordLogin").value.trim(),
+            };
+            login(data);
+        } else {
+            alert("Please fill in all fields.");
         }
+
     })
-}
+
+    function login(data) {
+        const action = "loginAction"
+        $.ajax({
+            url: "/php-prj/controllers/auth/login.php",
+            type: "POST",
+            data: {
+                username: data.username,
+                password: data.password,
+                action: action,
+            },
+            success: function(response) {
+                window.location.href = '/php-prj/index.php';
+                resetForm(loginItemFields);
+                toastr.success(response.message)
+            },
+            error: function(error) {
+                if (error.responseJSON) {
+                    toastr.error(error.responseJSON.error) || "An unexpected error occurred.";
+                    const errors = error.responseJSON.errorData || {};
+                    console.log(errors)
+                    formErrorHandler(errors, "Register");
+                } else {
+                    toastr.error("An unexpected error occurred.");
+                }
+            }
+        })
+    }
 </script>

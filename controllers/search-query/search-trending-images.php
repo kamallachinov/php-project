@@ -54,7 +54,7 @@ try {
         "paginatedData" => $paginatedData,
     ];
 
-    echo ResponseHandler::SUCCESS_RESPONSE("Success", $response, 200);
+    echo ResponseHandler::SUCCESS_RESPONSE("Found items", $response, 200);
 } catch (Exception $e) {
     echo ResponseHandler::ERROR_RESPONSE("Error fetching items: " . $e->getMessage(), 500);
 }
