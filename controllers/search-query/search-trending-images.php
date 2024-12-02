@@ -4,9 +4,19 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/utils/response-handler/response-ha
 
 try {
     $searchQuery = isset($_GET['query']) ? "%" . $_GET['query'] . "%" : '%';
+    $pageSize = isset($_GET['pageSize']) ? (int)$_GET['pageSize'] : 3;
+    $pageNumber = isset($_GET['pageNumber']) ? (int)$_GET['pageNumber'] : 1;
 
-    $sql_query = "SELECT * FROM dashboard_data WHERE Title LIKE ?";
-    $stmt = $conn->prepare($sql_query);
+    // Validate input
+    $pageSize = max(1, $pageSize);
+    $pageNumber = max(1, $pageNumber);
+
+    // Calculate the starting index for the current page
+    $startIndex = ($pageNumber - 1) * $pageSize;
+
+    // Get total data count for the search query
+    $totalCountQuery = "SELECT COUNT(*) AS total FROM dashboard_data WHERE Title LIKE ?";
+    $stmt = $conn->prepare($totalCountQuery);
     if (!$stmt) {
         throw new Exception("Failed to prepare statement: " . $conn->error);
     }
@@ -16,21 +26,35 @@ try {
         throw new Exception("Failed to execute statement: " . $stmt->error);
     }
 
+    $totalCountResult = $stmt->get_result();
+    $totalDataCountRow = $totalCountResult->fetch_assoc();
+    $totalDataCount = intval($totalDataCountRow['total']);
+
+    // Calculate total pages
+    $pageCount = ceil($totalDataCount / $pageSize);
+
+    // Fetch paginated data for the search query
+    $dataQuery = "SELECT * FROM dashboard_data WHERE Title LIKE ? LIMIT ?, ?";
+    $stmt = $conn->prepare($dataQuery);
+    if (!$stmt) {
+        throw new Exception("Failed to prepare statement: " . $conn->error);
+    }
+
+    $stmt->bind_param("sii", $searchQuery, $startIndex, $pageSize);
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to execute statement: " . $stmt->error);
+    }
+
     $result = $stmt->get_result();
-    if (!$result) {
-        throw new Exception("Failed to fetch results: " . $stmt->error);
-    }
+    $paginatedData = $result->fetch_all(MYSQLI_ASSOC);
 
-    $images = [];
-    while ($row = $result->fetch_assoc()) {
-        $images[] = $row;
-    }
+    $response = [
+        "totalDataCount" => $totalDataCount,
+        "pageCount" => $pageCount,
+        "paginatedData" => $paginatedData,
+    ];
 
-    if (!empty($images)) {
-        echo ResponseHandler::SUCCESS_RESPONSE("Found items", $images, 200);
-    } else {
-        echo ResponseHandler::SUCCESS_RESPONSE("No results found.", [], 200);
-    }
+    echo ResponseHandler::SUCCESS_RESPONSE("Success", $response, 200);
 } catch (Exception $e) {
     echo ResponseHandler::ERROR_RESPONSE("Error fetching items: " . $e->getMessage(), 500);
 }
