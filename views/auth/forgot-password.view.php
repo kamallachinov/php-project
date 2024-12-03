@@ -9,14 +9,14 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
     <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 class="text-2xl font-bold text-gray-900 text-center mb-6">Forgot Password</h1>
 
-        <form method="POST" action="/php-prj/controllers/auth/forgot-password.php">
+        <form method="POST" action="/php-prj/controllers/auth/forgot-password.php" action="send-password-reset">
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
                 <input type="email" id="email" name="email" required
                     class="w-full py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <button type="submit" name="resetPassword"
+            <button type="submit" name="resetPassword" id="resetPasswordBtn"
                 class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
                 Reset Password
             </button>
@@ -39,3 +39,34 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    resetPasswordBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+
+        $.ajax({
+            url: "/php-prj/controllers/reset-password/send-password-reset-mail.php",
+            type: "POST",
+            data: {
+                email: email
+            },
+            success: function(response) {
+                Swal.fire({
+                    title: "Success",
+                    text: "If the email address exists, a password reset link has been sent.",
+                    icon: "success"
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    title: "Error",
+                    text: "Something went wrong, please try again.",
+                    icon: "error"
+                });
+            }
+        });
+    });
+</script>
