@@ -2,6 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
 
 require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/vendor/autoload.php";
 require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/db/db-connection.php";
@@ -9,6 +10,8 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/utils/response-handler/response-ha
 require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/utils/token-generator/token-generator.php";
 
 $mail = new PHPMailer(true);
+$dotenv = Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT'] . "/php-prj");
+$dotenv->load();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $email = $_POST['email'];

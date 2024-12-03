@@ -56,7 +56,7 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
             success: function(response) {
                 Swal.fire({
                     title: "Success",
-                    text: "If the email address exists, a password reset link has been sent.",
+                    text: response.message,
                     icon: "success"
                 });
             },
