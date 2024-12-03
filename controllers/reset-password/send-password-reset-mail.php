@@ -44,16 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $mail->setFrom('info@sample.com', 'Sample Website');
             $mail->addAddress($email);
 
-            // Read the template
             $templatePath = $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/reset-mail-template/reset-mail-template.php";
             $template = file_get_contents($templatePath);
 
-            // Replace the placeholder with the actual reset link
             $emailBody = str_replace('{{RESET_LINK}}', $resetLink, $template);
 
             // Use the processed template as the email body
             $mail->isHTML(true);
-            $mail->Subject = 'Sample Website - Reset Password';
+            $mail->Subject = 'Website - Reset Password';
             $mail->Body = $emailBody;
 
             $mail->send();
