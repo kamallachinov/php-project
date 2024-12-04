@@ -44,13 +44,11 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
     document.getElementById("resetPasswordBtn").addEventListener("click", function(event) {
         event.preventDefault();
 
-        const email = document.getElementById("email").value;
-
         $.ajax({
             url: "/php-prj/controllers/reset-password/send-password-reset-mail.php",
             type: "POST",
             data: {
-                email: email
+                email: document.getElementById("email").value
             },
             success: function(response) {
                 Swal.fire({
@@ -59,10 +57,10 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
                     icon: "success"
                 });
             },
-            error: function() {
+            error: function(error) {
                 Swal.fire({
                     title: "Error",
-                    text: "Something went wrong, please try again.",
+                    text: error.responseJSON.error,
                     icon: "error"
                 });
             }

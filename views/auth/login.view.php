@@ -111,8 +111,7 @@ unset($_SESSION['loginErrors'], $_SESSION['oldInputs'], $_SESSION['message']);
                 if (error.responseJSON) {
                     toastr.error(error.responseJSON.error) || "An unexpected error occurred.";
                     const errors = error.responseJSON.errorData || {};
-                    console.log(errors)
-                    formErrorHandler(errors, "Register");
+                    formErrorHandler(errors, "Login");
                 } else {
                     toastr.error("An unexpected error occurred.");
                 }
