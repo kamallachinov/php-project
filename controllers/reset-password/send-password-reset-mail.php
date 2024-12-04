@@ -24,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if ($result->num_rows > 0) {
         $token = generateToken();
         $hashedToken = password_hash($token, PASSWORD_DEFAULT);
+
+        // token valid for 1 hour
         $expires = time() + 3600;
 
         $stmt = $conn->prepare('UPDATE `auth-data` SET reset_token = ?, reset_token_expiry = ? WHERE email = ?');
@@ -49,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             $emailBody = str_replace('{{RESET_LINK}}', $resetLink, $template);
 
-            // Use the processed template as the email body
             $mail->isHTML(true);
             $mail->Subject = 'Website - Reset Password';
             $mail->Body = $emailBody;

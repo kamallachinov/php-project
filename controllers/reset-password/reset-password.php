@@ -34,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("UPDATE `auth-data` SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE email = ?");
-    $stmt->bind_param("ss", $hashed_password, $email);
+    $stmt = $conn->prepare("UPDATE `auth-data` SET password = ?, confirm_password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE email = ?");
+    $stmt->bind_param("sss", $hashed_password, $hashed_password, $email);
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
