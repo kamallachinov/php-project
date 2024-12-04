@@ -1,5 +1,4 @@
 <?php
-session_start();
 $pageTitle = "Reset Password";
 
 require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
