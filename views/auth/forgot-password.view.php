@@ -9,7 +9,7 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
     <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 class="text-2xl font-bold text-gray-900 text-center mb-6">Forgot Password</h1>
 
-        <form method="POST" action="/php-prj/controllers/auth/forgot-password.php" action="send-password-reset">
+        <form method="POST">
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
                 <input type="email" id="email" name="email" required
@@ -42,7 +42,7 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
 
 
 <script>
-    resetPasswordBtn.addEventListener("click", function(event) {
+    document.getElementById("resetPasswordBtn").addEventListener("click", function(event) {
         event.preventDefault();
 
         const email = document.getElementById("email").value;

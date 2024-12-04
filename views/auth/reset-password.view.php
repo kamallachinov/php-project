@@ -9,10 +9,10 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
     <div class="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 class="text-2xl font-bold text-gray-900 text-center mb-6">Reset Password</h1>
 
-        <form method="POST" action="/php-prj/controllers/reset-password/reset-password.php">
+        <form method="POST">
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">New Password</label>
-                <input type="password" id="password" name="password" required
+                <input type="password" id="newPassword" name="password" required
                     class="w-full py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     minlength="8" placeholder="Enter your new password">
             </div>
@@ -24,7 +24,7 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
                     minlength="8" placeholder="Confirm your new password">
             </div>
 
-            <button type="submit" name="resetPassword"
+            <button type="submit" id="newPasswordSubmitBtn"
                 class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
                 Submit
             </button>
@@ -47,3 +47,37 @@ require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/views/partials/head.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
     integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    document.getElementById("newPasswordSubmitBtn").addEventListener("click", function(event) {
+        event.preventDefault();
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+
+        $.ajax({
+            url: "/php-prj/controllers/reset-password/reset-password.php?token=" + encodeURIComponent(
+                token),
+            type: "POST",
+            data: {
+                newPassword: document.getElementById("newPassword").value,
+                confirmPassword: document.getElementById("confirmPassword").value,
+            },
+            success: function(response) {
+                Swal.fire({
+                    title: "Success",
+                    text: response.message,
+                    icon: "success"
+                });
+            },
+            error: function(error) {
+                Swal.fire({
+                    title: "Error",
+                    text: error.responseJSON.error,
+                    icon: "error"
+                });
+            }
+        });
+    });
+</script>
