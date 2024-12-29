@@ -1,0 +1,25 @@
+services:
+  #mysql service
+  kamal_mysql:
+    platform: linux/amd64
+    image: mysql:8.0
+    container_name: kamal_mysql
+    restart: unless-stopped
+    ports:
+      - "3337:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: e-commerce-test
+      MYSQL_USER: kamal
+      MYSQL_PASSWORD: salam
+    volumes:
+      - ./e-commerce-test.sql:/docker-entrypoint-initdb.d/kamal.sql
+      - kamal_mysql_data:/var/lib/mysql
+    networks:
+      - kamal_network
+volumes:
+  kamal_mysql_data:
+    driver: local
+networks:
+  kamal_network:
+    driver: bridge

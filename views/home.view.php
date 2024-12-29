@@ -1,7 +1,5 @@
 <?php
-$pageTitle = "Home page";
-require "partials/head.php";
-require "partials/nav.php";
+    require_once "partials/header.php";
 ?>
 
 <main>
