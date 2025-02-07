@@ -18,19 +18,3 @@ if (file_exists($controllerPath)) {
 } else {
     require_once(APP_DIR . '/controllers/NotFound.php');
 }
-
-
-//require_once(APP_DIR . "/views/home.view.php");
-
-//header(APP_NAME .  "Location: /views/home.view.php");
-
-
-// $isAuthenticated = $_SESSION['isAuthenticated'] ?? false;
-
-// if ($isAuthenticated) {
-//     header(APP_NAME .  "Location: /views/auth/login.view.php");
-//     require(APP_NAME . "/views/auth/login.view.php");
-// } else {
-//     header(APP_NAME .  "Location: /views/home.view.php");
-//     require APP_NAME . "/views/home.view.php";
-// }
