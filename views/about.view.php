@@ -11,8 +11,10 @@ $aboutInfo = [
     ]
 ];
 
-require "partials/head.php";
-require "partials/nav.php" ;
+require_once('../config.php');
+require_once(APP_DIR . '/views/partials/head.php');
+require_once(APP_DIR . '/views/partials/nav.php');
+
 ?>
 
 

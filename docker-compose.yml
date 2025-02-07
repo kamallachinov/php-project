@@ -1,5 +1,5 @@
 services:
-  #mysql service
+  # MySQL Service
   kamal_mysql:
     platform: linux/amd64
     image: mysql:8.0
@@ -17,9 +17,25 @@ services:
       - kamal_mysql_data:/var/lib/mysql
     networks:
       - kamal_network
+
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: kamal_mysql  
+      PMA_USER: kamal
+      PMA_PASSWORD: salam
+    networks:
+      - kamal_network
+
 volumes:
   kamal_mysql_data:
     driver: local
+
 networks:
   kamal_network:
     driver: bridge
