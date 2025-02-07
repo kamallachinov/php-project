@@ -1,5 +1,6 @@
 <?php
-$currentPath = basename($_SERVER['REQUEST_URI']);
+require_once(__DIR__ . '/../../config.php');
+require_once(APP_DIR . '/db/db-connection.php');
 ?>
 
 <nav class="bg-gray-200 border-gray-200">
@@ -10,14 +11,12 @@ $currentPath = basename($_SERVER['REQUEST_URI']);
         </a>
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul class="font-medium flex flex-col p-4 md:p-0 mt-4    md:flex-row md:space-x-8  ">
-                <?php foreach($navbarItems as $item): ?>
+                <?php foreach ($navbarItems as $item): ?>
                 <li>
-                    <a href="<?= $item['path'] ?>"
-                        class="
+                    <a href="<?= $item['path'] ?>" class="
                             <?= (basename($currentPath) == basename($item['path'])) ? 'text-red-700 underline' : 'text-gray-900' ?>
                             block py-2 px-3 bg-transparent rounded md:p-0
-                        "
-                    >
+                        ">
                         <?= $item['path_name'] ?>
                     </a>
                 </li>

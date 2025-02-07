@@ -1,6 +1,8 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/db/db-connection.php";
-require $_SERVER['DOCUMENT_ROOT'] . "/php-prj/utils/response-handler/response-handler.php";
+require_once('../../config.php');
+// print(APP_DIR);
+require_once(APP_DIR . '/db/db-connection.php');
+require_once(APP_DIR . '/utils/response-handler/response-handler.php');
 
 // Get page size and page number from the query string
 $pageSize = isset($_GET['pageSize']) ? (int)$_GET['pageSize'] : 3;
@@ -15,7 +17,7 @@ $startIndex = ($pageNumber - 1) * $pageSize;
 
 // Get total data count
 $totalDataCountQuery = "SELECT COUNT(*) AS total FROM dashboard_data";
-$totalDataResult = $conn->query($totalDataCountQuery);
+$totalDataResult = $connection->query($totalDataCountQuery);
 $totalDataCountRow = $totalDataResult->fetch_assoc();
 $totalDataCount = intval($totalDataCountRow['total']);
 
